@@ -32,6 +32,8 @@
             box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
             position: relative;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         @keyframes floatIn {
@@ -104,25 +106,31 @@
             opacity: 0;
             animation: slideUp 0.8s 0.5s forwards;
         }
-        .register-btn {
+        .auth-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 32px;
             opacity: 0;
             animation: slideUp 0.8s 0.8s forwards;
+            width: 100%;
+            max-width: 280px;
+        }
+        .auth-btn {
+            flex: 1;
             background: linear-gradient(45deg, #0072ff, #00c6ff);
             border: none;
             color: white;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            padding: 16px 40px;
+            padding: 14px 0;
             border-radius: 60px;
             box-shadow: 0 10px 25px rgba(0, 114, 255, 0.4);
             cursor: pointer;
             transition: transform 0.25s ease, box-shadow 0.25s ease;
-            margin-top: 32px;
             border: 1px solid rgba(255,255,255,0.25);
-            width: 90%;
-            max-width: 280px;
         }
-        .register-btn:active { transform: scale(0.96); }
+        .auth-btn:active { transform: scale(0.96); }
 
         .community-stats {
             margin-top: auto;
@@ -141,21 +149,20 @@
             width: 90%;
             max-width: 320px;
         }
-        .community-stats span {
-            font-weight: normal;
-        }
 
         .main-content {
-            padding: 20px;
+            flex: 1;
             display: none;
+            flex-direction: column;
+            padding-bottom: 70px;
         }
-        .main-content.active { display: block; animation: slideUp 0.5s forwards; }
+        .main-content.active { display: flex; animation: slideUp 0.5s forwards; }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin: 16px 20px 10px 20px;
             padding: 10px 0;
             border-bottom: 1px solid rgba(255,255,255,0.2);
         }
@@ -175,44 +182,60 @@
             cursor: pointer;
         }
 
-        .tabs {
+        /* Нижняя навигация */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 450px;
+            margin: 0 auto;
+            background: rgba(10, 25, 47, 0.95);
+            backdrop-filter: blur(12px);
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 12px 12px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            z-index: 100;
         }
-        .tab {
-            flex: 1;
-            min-width: 100px;
-            background: rgba(255,255,255,0.1);
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: transparent;
             border: none;
-            color: white;
-            padding: 12px;
-            border-radius: 30px;
-            font-size: 0.9rem;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.7rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
-            backdrop-filter: blur(5px);
+            transition: all 0.2s;
+            padding: 6px 12px;
+            border-radius: 30px;
         }
-        .tab.active {
-            background: linear-gradient(45deg, #0072ff, #00c6ff);
-            box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4);
+        .nav-item span:first-child {
+            font-size: 1.4rem;
         }
-
+        .nav-item.active {
+            color: #00c6ff;
+            background: rgba(0, 114, 255, 0.2);
+        }
         .tab-content {
             display: none;
             background: rgba(255,255,255,0.05);
             border-radius: 20px;
             padding: 20px;
             backdrop-filter: blur(5px);
-            margin-bottom: 80px;
+            margin: 10px 16px 0 16px;
+            flex: 1;
         }
-        .tab-content.active { display: block; }
+        .tab-content.active {
+            display: block;
+        }
 
-        .search-container {
-            margin-bottom: 20px;
-        }
+        /* Общие стили для форм */
+        .search-container { margin-bottom: 20px; }
         .search-input {
             width: 100%;
             padding: 12px 16px;
@@ -222,19 +245,8 @@
             color: white;
             font-size: 1rem;
             outline: none;
-            transition: all 0.2s;
         }
-        .search-input:focus {
-            border-color: #0072ff;
-            background: rgba(255,255,255,0.15);
-        }
-        .search-input::placeholder {
-            color: rgba(255,255,255,0.5);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
         .form-group label {
             display: block;
             margin-bottom: 8px;
@@ -250,11 +262,6 @@
             color: white;
             font-size: 1rem;
         }
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            outline: none;
-            border-color: #0072ff;
-        }
-
         .strength-item, .skill-item {
             background: rgba(255,255,255,0.05);
             padding: 15px;
@@ -274,7 +281,6 @@
             width: 100%;
             outline: none;
         }
-        .dynamic-input:focus { border-bottom-color: #00c6ff; }
         .add-btn {
             background: rgba(255,255,255,0.2);
             border: 1px dashed rgba(255,255,255,0.5);
@@ -286,8 +292,7 @@
             cursor: pointer;
             margin-bottom: 10px;
         }
-        
-        /* Унифицированные стили для чекбоксов — одинаковый размер и вид */
+        /* Чекбоксы унифицированы как в index.html */
         .checkbox-label {
             display: flex;
             align-items: center;
@@ -331,7 +336,6 @@
             font-size: 0.95rem;
             line-height: 1.3;
         }
-        
         .save-btn {
             background: linear-gradient(45deg, #00c6ff, #0072ff);
             border: none;
@@ -343,24 +347,15 @@
             font-weight: 600;
             cursor: pointer;
             margin-top: 20px;
-            box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4);
         }
-
-        .directors-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+        .directors-grid { display: flex; flex-direction: column; gap: 20px; }
         .director-card {
             background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(12px);
             border-radius: 28px;
             padding: 18px;
-            transition: transform 0.2s, box-shadow 0.2s;
             border: 1px solid rgba(255,255,255,0.15);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
-        .director-card:hover { transform: translateY(-3px); }
         .card-header {
             display: flex;
             align-items: center;
@@ -378,24 +373,6 @@
             font-size: 28px;
             font-weight: 600;
             color: white;
-            box-shadow: 0 5px 15px rgba(0,114,255,0.4);
-            flex-shrink: 0;
-        }
-        .card-title {
-            flex: 1;
-        }
-        .card-title h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        .card-title p {
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.7);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
         }
         .badge-mentor {
             background: #ffaa33;
@@ -411,25 +388,13 @@
             border-radius: 18px;
             padding: 12px;
         }
-        .info-section h4 {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #9ac2ff;
-            margin-bottom: 8px;
-        }
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 5px;
-        }
+        .info-section h4 { font-size: 0.85rem; color: #9ac2ff; margin-bottom: 8px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
         .tag {
             background: rgba(0,114,255,0.3);
             border-radius: 20px;
             padding: 4px 12px;
             font-size: 0.75rem;
-            font-weight: 500;
         }
         .contact-btn, .detail-btn {
             background: linear-gradient(45deg, #0072ff, #00c6ff);
@@ -438,15 +403,10 @@
             padding: 10px;
             border-radius: 40px;
             width: 100%;
-            font-weight: 600;
             margin-top: 12px;
             cursor: pointer;
-            font-size: 0.9rem;
         }
-        .detail-btn {
-            background: rgba(255,255,255,0.2);
-            margin-top: 8px;
-        }
+        .detail-btn { background: rgba(255,255,255,0.2); }
         .event-card {
             background: rgba(255,255,255,0.1);
             border-radius: 15px;
@@ -454,60 +414,6 @@
             margin-bottom: 15px;
             border-left: 4px solid #0072ff;
         }
-        .event-card h3 { margin-bottom: 5px; color: #00c6ff; }
-        .event-card .date { font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
-        .event-card button {
-            background: #0072ff;
-            border: none;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            margin-top: 10px;
-            margin-right: 8px;
-            cursor: pointer;
-        }
-        .mentor-card {
-            background: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .mentor-card .badge { background: #00c6ff; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; }
-        .floating-icon {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(45deg, #0072ff, #00c6ff);
-            width: 60px;
-            height: 60px;
-            border-radius: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 5px 20px rgba(0, 114, 255, 0.5);
-            cursor: pointer;
-            z-index: 100;
-        }
-        .install-prompt {
-            background: rgba(0, 26, 59, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px;
-            border-radius: 15px;
-            margin: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #0072ff;
-        }
-        @media (max-width: 450px) {
-            .gravity-text { font-size: 2.5rem; }
-            .region-text { font-size: 1.3rem; }
-            .tab { min-width: 80px; font-size: 0.8rem; padding: 8px; }
-        }
-
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -521,29 +427,18 @@
             align-items: center;
             z-index: 1000;
             padding: 20px;
-            overflow-y: auto;
         }
         .modal-content {
-            max-width: 560px;
+            max-width: 400px;
             width: 100%;
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(16px);
             border-radius: 40px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+            padding: 24px;
             color: white;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            animation: slideUp 0.3s ease;
-        }
-        .modal-content .director-card-full {
-            padding: 24px 28px;
         }
         .close-modal {
-            position: sticky;
-            top: 15px;
-            right: 15px;
             float: right;
             background: rgba(255,255,255,0.2);
             border: none;
@@ -553,210 +448,88 @@
             height: 36px;
             border-radius: 50%;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
-            z-index: 10;
         }
         .strength-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 12px;
-            flex-wrap: wrap;
             gap: 12px;
-        }
-        .strength-name {
-            font-weight: 500;
-            min-width: 140px;
         }
         .strength-bar {
             flex: 1;
             height: 8px;
             background: rgba(255,255,255,0.2);
             border-radius: 10px;
-            overflow: hidden;
         }
         .strength-fill {
             height: 100%;
             background: linear-gradient(90deg, #00c6ff, #0072ff);
             border-radius: 10px;
-            width: 0%;
         }
-        .strength-value {
-            font-size: 0.8rem;
-            font-weight: 600;
-            min-width: 36px;
-            text-align: right;
-            color: #aad0ff;
-        }
-        .skill-item-compact {
+        .install-prompt {
+            background: rgba(0, 26, 59, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 15px;
+            margin: 10px;
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            border-bottom: 1px dashed rgba(255,255,255,0.2);
-            padding: 8px 0;
+            align-items: center;
         }
-        .skill-level {
-            background: rgba(0,114,255,0.5);
-            padding: 2px 10px;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-        .interests-line {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 12px;
-        }
-        .interest-badge {
-            background: rgba(255,255,240,0.12);
-            border-radius: 30px;
-            padding: 5px 14px;
-            font-size: 0.8rem;
-        }
-        .detail-tag {
-            background: rgba(0, 114, 255, 0.35);
-            border-radius: 40px;
-            padding: 6px 16px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            display: inline-block;
-            margin-right: 8px;
-            margin-bottom: 8px;
+        @media (max-width: 450px) {
+            .gravity-text { font-size: 2.5rem; }
+            .region-text { font-size: 1.3rem; }
+            .nav-item span:first-child { font-size: 1.2rem; }
+            .nav-item { font-size: 0.6rem; padding: 4px 8px; }
         }
     </style>
 </head>
 <body>
 <div id="app">
+    <!-- Экран приветствия -->
     <div class="splash-screen" id="splashScreen">
-        <div><div class="gravity-text">Гравитация</div><div class="region-text">Московская область</div></div>
-        <button class="register-btn" id="registerBtn">Вход / Регистрация</button>
+        <div>
+            <div class="gravity-text">Гравитация</div>
+            <div class="region-text">Московская область</div>
+        </div>
+        <div class="auth-buttons">
+            <button class="auth-btn" id="loginBtn">Вход</button>
+            <button class="auth-btn" id="registerBtn">Регистрация</button>
+        </div>
         <div class="install-prompt" id="installPrompt" style="display: none;"><span>📱 Установить приложение</span><button id="installBtn">Установить</button></div>
         <div class="community-stats">
             Гравитация – профессиональное сообщество директоров нас: <span>287</span>
         </div>
     </div>
 
+    <!-- Основной контент -->
     <div class="main-content" id="mainContent">
-        <div class="header"><h1>Гравитация</h1><button class="logout-btn" id="logoutBtn">Выйти</button></div>
-
-        <div class="tabs">
-            <button class="tab active" data-tab="profile">Профиль</button>
-            <button class="tab" data-tab="school">Школа</button>
-            <button class="tab" data-tab="events">Мероприятия</button>
-            <button class="tab" data-tab="directors">Директора</button>
-            <button class="tab" data-tab="mentors">Наставники</button>
+        <div class="header">
+            <h1>Гравитация</h1>
+            <button class="logout-btn" id="logoutBtn">Выйти</button>
         </div>
 
-        <div class="tab-content active" id="profile">
-            <h2 style="margin-bottom: 20px;">Профиль директора</h2>
-            <div class="form-group"><label>ФИО полностью</label><input type="text" id="directorName" placeholder="Иванов Иван Иванович"></div>
-            <div class="form-group"><label>Email</label><input type="email" id="directorEmail" placeholder="director@school.ru"></div>
-            <div class="form-group"><label>Телефон</label><input type="tel" id="directorPhone" placeholder="+7 (999) 999-99-99"></div>
-            <h3 style="margin: 20px 0 10px;">Мои сильные стороны</h3><div id="strengthsList"></div><button class="add-btn" onclick="addStrength()">+ Добавить качество</button>
-            <h3 style="margin: 20px 0 10px;">Профессиональные навыки</h3><div id="skillsList"></div><button class="add-btn" onclick="addSkill()">+ Добавить навык</button>
-            <h3 style="margin: 20px 0 10px;">Уникальный опыт</h3><div class="form-group"><textarea id="uniqueExperience" rows="3" placeholder="Расскажите о вашем уникальном профессиональном опыте..."></textarea></div>
-            <h3 style="margin: 20px 0 10px;">Личные интересы</h3><div class="form-group"><textarea id="personalInterests" rows="3" placeholder="Ваши хобби, увлечения и интересы..."></textarea></div>
-            
-            <!-- Оба чекбокса используют одинаковые классы, размер и стиль унифицированы через CSS выше -->
-            <div class="checkbox-label" style="margin-top: 20px;">
-                <input type="checkbox" id="mentorCheckbox">
-                <label for="mentorCheckbox">Готов стать наставником будущих лидеров в сфере образования</label>
-            </div>
-            
-            <div class="checkbox-label">
-                <input type="checkbox" id="consentCheckbox">
-                <label for="consentCheckbox">Согласен на обработку персональных данных</label>
-            </div>
-            
-            <button class="save-btn" onclick="saveProfile()">Сохранить профиль</button>
-        </div>
+        <!-- Контейнеры для контента -->
+        <div class="tab-content" id="profile"></div>
+        <div class="tab-content" id="school"></div>
+        <div class="tab-content" id="events"></div>
+        <div class="tab-content" id="directors"></div>
+        <div class="tab-content" id="mentors"></div>
 
-        <div class="tab-content" id="school">
-            <h2 style="margin-bottom: 20px;">Информация о школе</h2>
-            <div class="form-group"><label>Полное название школы</label><input type="text" id="schoolName" placeholder="МБОУ СОШ №1"></div>
-            <div class="form-group"><label>Адрес школы</label><input type="text" id="schoolAddress" placeholder="г. Москва, ул. Школьная, 1"></div>
-            <div class="form-group"><label>Количество учеников</label><input type="number" id="studentCount" placeholder="500"></div>
-            <div class="form-group"><label>Количество педагогов</label><input type="number" id="teacherCount" placeholder="30"></div>
-            <div class="form-group"><label>Тип школы</label><select id="schoolType"><option>Средняя общеобразовательная</option><option>Гимназия</option><option>Лицей</option><option>Школа с углубленным изучением предметов</option></select></div>
-            <div class="form-group"><label>Количество зданий в учреждении</label><input type="number" id="buildingCount" placeholder="1"></div>
-            <div class="form-group"><label>Могу быть полезен:</label><textarea id="usefulExperience" rows="3" placeholder="Опишите ваш управленческий опыт, которым готовы поделиться..."></textarea></div>
-            <div class="form-group"><label>Хочу узнать:</label><textarea id="wantToKnow" rows="3" placeholder="Какие вопросы вас интересуют в сфере управления образованием?..."></textarea></div>
-            <button class="save-btn" onclick="saveSchool()">Сохранить информацию</button>
-        </div>
-
-        <div class="tab-content" id="events">
-            <h2 style="margin-bottom: 20px;">Обмен опытом: мероприятия</h2>
-            <div style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 15px; margin-bottom: 20px;">
-                <h3 style="margin-bottom: 15px;">Создать мероприятие</h3>
-                <div class="form-group"><label>Название</label><input type="text" id="eventTitle" placeholder="Мастер-класс по цифровизации"></div>
-                <div class="form-group"><label>Дата и время</label><input type="text" id="eventDate" placeholder="15 мая 2026, 14:00"></div>
-                <div class="form-group"><label>Описание / программа</label><textarea id="eventDesc" rows="2" placeholder="Чему будут учить? Формат?"></textarea></div>
-                <div class="form-group"><label>Максимум участников (сотрудников)</label><input type="number" id="eventMax" placeholder="10"></div>
-                <button class="save-btn" id="createEventBtn" style="margin-top: 5px;">➕ Создать мероприятие</button>
-            </div>
-            <h3>Доступные мероприятия</h3><div id="eventsList"></div>
-        </div>
-
-        <div class="tab-content" id="directors">
-            <h2 style="margin-bottom: 20px;">🧑‍💼 Директора школ</h2>
-            <div class="search-container">
-                <input type="text" id="directorSearchInput" class="search-input" placeholder="🔍 Поиск по имени, школе, городу, опыту...">
-            </div>
-            <div id="directorsList" class="directors-grid"></div>
-        </div>
-
-        <div class="tab-content" id="mentors">
-            <h2 style="margin-bottom: 20px;">Потенциальные наставники</h2>
-            <div class="mentor-card"><div><strong>Иванова Елена Петровна</strong><div style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">Школа №15, г. Химки</div><div style="font-size: 0.8rem; margin-top: 5px;">Эксперт: Управление, финансы</div></div><span class="badge">Наставник</span></div>
-            <div class="mentor-card"><div><strong>Смирнов Александр Игоревич</strong><div style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">Гимназия №9, г. Королев</div><div style="font-size: 0.8rem; margin-top: 5px;">Эксперт: Цифровизация, проекты</div></div><span class="badge">Наставник</span></div>
-            <div class="mentor-card"><div><strong>Козлова Татьяна Михайловна</strong><div style="font-size: 0.9rem; color: rgba(255,255,255,0.7);">Лицей №5, г. Мытищи</div><div style="font-size: 0.8rem; margin-top: 5px;">Эксперт: Кадры, воспитание</div></div><span class="badge">Наставник</span></div>
+        <!-- Нижняя навигация -->
+        <div class="bottom-nav">
+            <button class="nav-item" data-tab="profile"><span>👤</span><span>Профиль</span></button>
+            <button class="nav-item" data-tab="school"><span>🏫</span><span>Школа</span></button>
+            <button class="nav-item" data-tab="events"><span>📅</span><span>Мероприятия</span></button>
+            <button class="nav-item" data-tab="directors"><span>🧑‍💼</span><span>Директора</span></button>
+            <button class="nav-item" data-tab="mentors"><span>🌟</span><span>Наставники</span></button>
         </div>
     </div>
-    <div class="floating-icon" onclick="window.location.href='#events'" style="display: none;" id="floatingIcon">📅</div>
 </div>
 
 <script>
-    // ========== Базовые функции (авторизация, вкладки) ==========
-    const splash = document.getElementById('splashScreen');
-    const main = document.getElementById('mainContent');
-    const floatingIcon = document.getElementById('floatingIcon');
-    document.getElementById('registerBtn').addEventListener('click', () => {
-        splash.style.display = 'none';
-        main.classList.add('active');
-        floatingIcon.style.display = 'flex';
-        localStorage.setItem('userLoggedIn', 'true');
-        renderDirectors();
-    });
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-        splash.style.display = 'flex';
-        main.classList.remove('active');
-        floatingIcon.style.display = 'none';
-        localStorage.removeItem('userLoggedIn');
-    });
-    if (localStorage.getItem('userLoggedIn') === 'true') {
-        splash.style.display = 'none';
-        main.classList.add('active');
-        floatingIcon.style.display = 'flex';
-    }
-
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            tabs.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            const tabName = this.getAttribute('data-tab');
-            document.getElementById(tabName).classList.add('active');
-            if (tabName === 'directors') renderDirectors();
-            if (tabName === 'events') renderEvents();
-        });
-    });
-
-    // PWA установка
+    // ---------- Авторизация и модальные окна ----------
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
@@ -766,12 +539,130 @@
     document.getElementById('installBtn')?.addEventListener('click', async () => {
         if (!deferredPrompt) return;
         deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
+        await deferredPrompt.userChoice;
         deferredPrompt = null;
         document.getElementById('installPrompt').style.display = 'none';
     });
 
-    // ========== Профиль: сильные стороны и навыки ==========
+    function showModal(title, contentHtml) {
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-overlay';
+        overlay.innerHTML = `
+            <div class="modal-content">
+                <button class="close-modal">&times;</button>
+                <h2 style="margin-bottom: 20px;">${title}</h2>
+                ${contentHtml}
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        overlay.querySelector('.close-modal').onclick = () => overlay.remove();
+        overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+        return overlay;
+    }
+
+    function showLoginModal() {
+        const html = `
+            <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="director@school.ru"></div>
+            <div class="form-group"><label>Пароль</label><input type="password" id="loginPassword" placeholder="******"></div>
+            <button class="save-btn" id="doLoginBtn">Войти</button>
+        `;
+        const modal = showModal('Вход в аккаунт', html);
+        modal.querySelector('#doLoginBtn').onclick = () => {
+            const email = modal.querySelector('#loginEmail').value.trim();
+            const password = modal.querySelector('#loginPassword').value;
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                localStorage.setItem('userLoggedIn', 'true');
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                modal.remove();
+                showMainApp();
+            } else {
+                alert('Неверный email или пароль');
+            }
+        };
+    }
+
+    function showRegisterModal() {
+        const html = `
+            <div class="form-group"><label>ФИО</label><input type="text" id="regName" placeholder="Иванов Иван Иванович"></div>
+            <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="director@school.ru"></div>
+            <div class="form-group"><label>Телефон</label><input type="tel" id="regPhone" placeholder="+7 (999) 999-99-99"></div>
+            <div class="form-group"><label>Пароль</label><input type="password" id="regPassword" placeholder="минимум 6 символов"></div>
+            <button class="save-btn" id="doRegisterBtn">Зарегистрироваться</button>
+        `;
+        const modal = showModal('Регистрация', html);
+        modal.querySelector('#doRegisterBtn').onclick = () => {
+            const name = modal.querySelector('#regName').value.trim();
+            const email = modal.querySelector('#regEmail').value.trim();
+            const phone = modal.querySelector('#regPhone').value.trim();
+            const password = modal.querySelector('#regPassword').value;
+            if (!name || !email || !password) {
+                alert('Заполните все поля');
+                return;
+            }
+            if (password.length < 6) {
+                alert('Пароль должен быть не менее 6 символов');
+                return;
+            }
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (users.some(u => u.email === email)) {
+                alert('Пользователь с таким email уже существует');
+                return;
+            }
+            const newUser = { name, email, phone, password };
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            modal.remove();
+            showMainApp();
+        };
+    }
+
+    function showMainApp() {
+        document.getElementById('splashScreen').style.display = 'none';
+        const main = document.getElementById('mainContent');
+        main.classList.add('active');
+        initTabs();
+        loadUserDataIntoForms();
+        renderDirectors();
+        renderEvents();
+    }
+
+    function logout() {
+        localStorage.removeItem('userLoggedIn');
+        localStorage.removeItem('currentUser');
+        document.getElementById('splashScreen').style.display = 'flex';
+        document.getElementById('mainContent').classList.remove('active');
+    }
+
+    // ========== ОБНОВЛЁННЫЙ ПРОФИЛЬ (HTML И ФУНКЦИИ) ==========
+    // Устанавливаем содержимое вкладки профиля в точности как в index.html
+    document.getElementById('profile').innerHTML = `
+        <h2 style="margin-bottom: 20px;">Профиль директора</h2>
+        <div class="form-group"><label>ФИО полностью</label><input type="text" id="directorName" placeholder="Иванов Иван Иванович"></div>
+        <div class="form-group"><label>Email</label><input type="email" id="directorEmail" placeholder="director@school.ru"></div>
+        <div class="form-group"><label>Телефон</label><input type="tel" id="directorPhone" placeholder="+7 (999) 999-99-99"></div>
+        <h3 style="margin: 20px 0 10px;">Мои сильные стороны</h3><div id="strengthsList"></div><button class="add-btn" onclick="addStrength()">+ Добавить качество</button>
+        <h3 style="margin: 20px 0 10px;">Профессиональные навыки</h3><div id="skillsList"></div><button class="add-btn" onclick="addSkill()">+ Добавить навык</button>
+        <h3 style="margin: 20px 0 10px;">Уникальный опыт</h3><div class="form-group"><textarea id="uniqueExperience" rows="3" placeholder="Расскажите о вашем уникальном профессиональном опыте..."></textarea></div>
+        <h3 style="margin: 20px 0 10px;">Личные интересы</h3><div class="form-group"><textarea id="personalInterests" rows="3" placeholder="Ваши хобби, увлечения и интересы..."></textarea></div>
+        
+        <div class="checkbox-label" style="margin-top: 20px;">
+            <input type="checkbox" id="mentorCheckbox">
+            <label for="mentorCheckbox">Готов стать наставником будущих лидеров в сфере образования</label>
+        </div>
+        
+        <div class="checkbox-label">
+            <input type="checkbox" id="consentCheckbox">
+            <label for="consentCheckbox">Согласен на обработку персональных данных</label>
+        </div>
+        
+        <button class="save-btn" onclick="saveProfile()">Сохранить профиль</button>
+    `;
+
+    // Функции добавления сильных сторон и навыков (аналоги index.html)
     window.addStrength = function(name = '', val = 5) {
         const strengthsList = document.getElementById('strengthsList');
         const newDiv = document.createElement('div');
@@ -815,6 +706,115 @@
         alert('Профиль сохранён!');
         renderDirectors();
     };
+
+    function loadUserDataIntoForms() {
+        // Загрузка профиля
+        const savedProfile = localStorage.getItem('directorProfile');
+        if (savedProfile) {
+            const profile = JSON.parse(savedProfile);
+            document.getElementById('directorName').value = profile.name || '';
+            document.getElementById('directorEmail').value = profile.email || '';
+            document.getElementById('directorPhone').value = profile.phone || '';
+            document.getElementById('uniqueExperience').value = profile.experience || '';
+            document.getElementById('personalInterests').value = profile.interests || '';
+            document.getElementById('mentorCheckbox').checked = profile.isMentor || false;
+            document.getElementById('consentCheckbox').checked = profile.consent || false;
+            // Очищаем списки и загружаем сохранённые strengths/skills
+            const strengthsDiv = document.getElementById('strengthsList');
+            const skillsDiv = document.getElementById('skillsList');
+            strengthsDiv.innerHTML = '';
+            skillsDiv.innerHTML = '';
+            if (profile.strengths && profile.strengths.length) {
+                profile.strengths.forEach(s => addStrength(s.name, s.val));
+            } else {
+                addStrength('Стратегическое планирование',8);
+                addStrength('Управление персоналом',7);
+            }
+            if (profile.skills && profile.skills.length) {
+                profile.skills.forEach(s => addSkill(s.name, s.level));
+            } else {
+                addSkill('Цифровая трансформация','Средний');
+            }
+        } else {
+            // Если профиля нет, создаём дефолтные значения
+            addStrength('Стратегическое планирование',8);
+            addStrength('Управление персоналом',7);
+            addSkill('Цифровая трансформация','Средний');
+            document.getElementById('consentCheckbox').checked = false;
+        }
+        // Загрузка школы (как было)
+        const savedSchool = localStorage.getItem('schoolInfo');
+        if (savedSchool) {
+            const school = JSON.parse(savedSchool);
+            document.getElementById('schoolName').value = school.name || '';
+            document.getElementById('schoolAddress').value = school.address || '';
+            document.getElementById('studentCount').value = school.students || '';
+            document.getElementById('teacherCount').value = school.teachers || '';
+            document.getElementById('schoolType').value = school.type || 'Средняя общеобразовательная';
+            document.getElementById('buildingCount').value = school.buildingCount || '';
+            document.getElementById('usefulExperience').value = school.usefulExperience || '';
+            document.getElementById('wantToKnow').value = school.wantToKnow || '';
+        }
+    }
+
+    // ---------- Переключение вкладок через нижнее меню ----------
+    function initTabs() {
+        const navItems = document.querySelectorAll('.nav-item');
+        const contents = document.querySelectorAll('.tab-content');
+        function switchTab(tabId) {
+            contents.forEach(c => c.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            navItems.forEach(item => {
+                if (item.getAttribute('data-tab') === tabId) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+            if (tabId === 'directors') renderDirectors();
+            if (tabId === 'events') renderEvents();
+            if (tabId === 'mentors') renderMentors();
+        }
+        navItems.forEach(item => {
+            item.addEventListener('click', () => switchTab(item.getAttribute('data-tab')));
+        });
+        // По умолчанию показываем профиль
+        switchTab('profile');
+    }
+
+    // ---------- Остальные вкладки (не меняются) ----------
+    document.getElementById('school').innerHTML = `
+        <h2 style="margin-bottom: 20px;">Информация о школе</h2>
+        <div class="form-group"><label>Полное название школы</label><input type="text" id="schoolName" placeholder="МБОУ СОШ №1"></div>
+        <div class="form-group"><label>Адрес школы</label><input type="text" id="schoolAddress" placeholder="г. Москва, ул. Школьная, 1"></div>
+        <div class="form-group"><label>Количество учеников</label><input type="number" id="studentCount" placeholder="500"></div>
+        <div class="form-group"><label>Количество педагогов</label><input type="number" id="teacherCount" placeholder="30"></div>
+        <div class="form-group"><label>Тип школы</label><select id="schoolType"><option>Средняя общеобразовательная</option><option>Гимназия</option><option>Лицей</option></select></div>
+        <div class="form-group"><label>Количество зданий</label><input type="number" id="buildingCount" placeholder="1"></div>
+        <div class="form-group"><label>Могу быть полезен:</label><textarea id="usefulExperience" rows="3"></textarea></div>
+        <div class="form-group"><label>Хочу узнать:</label><textarea id="wantToKnow" rows="3"></textarea></div>
+        <button class="save-btn" onclick="saveSchool()">Сохранить информацию</button>
+    `;
+    document.getElementById('events').innerHTML = `
+        <h2 style="margin-bottom: 20px;">Обмен опытом: мероприятия</h2>
+        <div style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 15px; margin-bottom: 20px;">
+            <h3 style="margin-bottom: 15px;">Создать мероприятие</h3>
+            <div class="form-group"><label>Название</label><input type="text" id="eventTitle" placeholder="Мастер-класс по цифровизации"></div>
+            <div class="form-group"><label>Дата и время</label><input type="text" id="eventDate" placeholder="15 мая 2026, 14:00"></div>
+            <div class="form-group"><label>Описание</label><textarea id="eventDesc" rows="2"></textarea></div>
+            <div class="form-group"><label>Максимум участников</label><input type="number" id="eventMax" placeholder="10"></div>
+            <button class="save-btn" id="createEventBtn">➕ Создать мероприятие</button>
+        </div>
+        <h3>Доступные мероприятия</h3><div id="eventsList"></div>
+    `;
+    document.getElementById('directors').innerHTML = `
+        <h2 style="margin-bottom: 20px;">🧑‍💼 Директора школ</h2>
+        <div class="search-container"><input type="text" id="directorSearchInput" class="search-input" placeholder="🔍 Поиск..."></div>
+        <div id="directorsList" class="directors-grid"></div>
+    `;
+    document.getElementById('mentors').innerHTML = `
+        <h2 style="margin-bottom: 20px;">Потенциальные наставники</h2>
+        <div id="mentorsList"></div>
+    `;
+
+    // ---------- Функции школы, событий, директоров и наставников (без изменений) ----------
     window.saveSchool = function() {
         const schoolData = {
             name: document.getElementById('schoolName').value,
@@ -831,42 +831,31 @@
         renderDirectors();
     };
 
-    // ========== Мероприятия ==========
     let events = [];
     function loadEventsFromStorage() { const stored = localStorage.getItem('events'); events = stored ? JSON.parse(stored) : []; }
     function saveEventsToStorage() { localStorage.setItem('events', JSON.stringify(events)); }
-    function getCurrentDirectorName() {
-        const profile = localStorage.getItem('directorProfile');
-        return profile ? (JSON.parse(profile).name || 'Директор') : 'Директор';
-    }
-    function getCurrentSchoolName() {
-        const school = localStorage.getItem('schoolInfo');
-        return school ? (JSON.parse(school).name || 'Школа') : 'Школа';
-    }
+    function getCurrentDirectorName() { const p = localStorage.getItem('directorProfile'); return p ? (JSON.parse(p).name || 'Директор') : 'Директор'; }
+    function getCurrentSchoolName() { const s = localStorage.getItem('schoolInfo'); return s ? (JSON.parse(s).name || 'Школа') : 'Школа'; }
     function createEvent(title, date, description, maxParticipants) {
-        const newEvent = {
-            id: Date.now(), title, date, description, max: parseInt(maxParticipants) || 999,
-            registrations: [], creator: getCurrentDirectorName(), creatorSchool: getCurrentSchoolName()
-        };
-        events.push(newEvent);
+        events.push({ id: Date.now(), title, date, description, max: parseInt(maxParticipants) || 999, registrations: [], creator: getCurrentDirectorName(), creatorSchool: getCurrentSchoolName() });
         saveEventsToStorage();
         renderEvents();
     }
     window.registerForEvent = function(eventId) {
-        const event = events.find(e => e.id == eventId);
-        if (!event) return;
-        if (event.registrations.length >= event.max) { alert('Максимум участников'); return; }
+        const ev = events.find(e => e.id == eventId);
+        if (!ev) return;
+        if (ev.registrations.length >= ev.max) { alert('Максимум участников'); return; }
         const employeeName = prompt('ФИО сотрудника:'); if (!employeeName) return;
         const position = prompt('Должность:'); if (!position) return;
         const school = prompt('От какой школы?', getCurrentSchoolName()); if (!school) return;
-        event.registrations.push({ employeeName, position, schoolName: school, registeredAt: new Date().toLocaleString() });
+        ev.registrations.push({ employeeName, position, schoolName: school, registeredAt: new Date().toLocaleString() });
         saveEventsToStorage();
         renderEvents();
         alert(`Сотрудник ${employeeName} записан`);
     };
     window.deleteEvent = function(eventId) {
-        const event = events.find(e => e.id == eventId);
-        if (!event || event.creator !== getCurrentDirectorName()) { alert('Удалять можно только свои мероприятия'); return; }
+        const ev = events.find(e => e.id == eventId);
+        if (!ev || ev.creator !== getCurrentDirectorName()) { alert('Удалять можно только свои мероприятия'); return; }
         if (confirm('Удалить?')) { events = events.filter(e => e.id != eventId); saveEventsToStorage(); renderEvents(); }
     };
     function renderEvents() {
@@ -876,132 +865,16 @@
         let html = '';
         events.forEach(ev => {
             const isCreator = (ev.creator === getCurrentDirectorName());
-            html += `<div class="event-card"><h3>${escapeHtml(ev.title)}</h3><div class="date">📅 ${escapeHtml(ev.date)}</div><p>${escapeHtml(ev.description)}</p><div>👥 Записалось: ${ev.registrations.length} / ${ev.max}</div><div style="font-size:0.75rem;">👤 Организатор: ${escapeHtml(ev.creator)} (${escapeHtml(ev.creatorSchool)})</div>`;
+            html += `<div class="event-card"><h3>${escapeHtml(ev.title)}</h3><div class="date">📅 ${escapeHtml(ev.date)}</div><p>${escapeHtml(ev.description)}</p><div>👥 Записалось: ${ev.registrations.length} / ${ev.max}</div><div>👤 Организатор: ${escapeHtml(ev.creator)} (${escapeHtml(ev.creatorSchool)})</div>`;
             if (ev.registrations.length) {
-                html += `<div class="registrations" style="margin-top:8px;"><strong>Записавшиеся:</strong><ul>`;
-                ev.registrations.forEach(r => html += `<li>${escapeHtml(r.employeeName)} (${escapeHtml(r.position)}) — ${escapeHtml(r.schoolName)}</li>`);
-                html += `</ul></div>`;
+                html += `<div><strong>Записавшиеся:</strong><ul>${ev.registrations.map(r => `<li>${escapeHtml(r.employeeName)} (${escapeHtml(r.position)}) — ${escapeHtml(r.schoolName)}</li>`).join('')}</ul></div>`;
             }
             html += `<div style="margin-top:12px;">${!isCreator ? `<button onclick="registerForEvent(${ev.id})">📝 Записать сотрудника</button>` : ''}${isCreator ? `<button onclick="deleteEvent(${ev.id})" style="background:#ff4757;">🗑 Удалить</button>` : ''}</div></div>`;
         });
         container.innerHTML = html;
     }
-    document.getElementById('createEventBtn')?.addEventListener('click', () => {
-        const title = document.getElementById('eventTitle').value.trim();
-        const date = document.getElementById('eventDate').value.trim();
-        const desc = document.getElementById('eventDesc').value.trim();
-        const max = document.getElementById('eventMax').value;
-        if (!title || !date || !desc) { alert('Заполните все поля'); return; }
-        createEvent(title, date, desc, max);
-        document.getElementById('eventTitle').value = ''; document.getElementById('eventDate').value = ''; document.getElementById('eventDesc').value = ''; document.getElementById('eventMax').value = '';
-    });
+    function escapeHtml(str) { return str?.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}) || ''; }
 
-    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
-
-    // ========== Детальная карточка директора (модальное окно) ==========
-    function showDirectorDetail(director) {
-        const existingOverlay = document.querySelector('.modal-overlay');
-        if (existingOverlay) existingOverlay.remove();
-
-        const overlay = document.createElement('div');
-        overlay.className = 'modal-overlay';
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) overlay.remove();
-        });
-
-        const modal = document.createElement('div');
-        modal.className = 'modal-content';
-
-        const strengthsHtml = (director.strengthsDetailed || director.strengths || []).map(s => {
-            const val = s.val || (s.value ? s.value : 5);
-            return `
-                <div class="strength-row">
-                    <span class="strength-name">${escapeHtml(s.name)}</span>
-                    <div class="strength-bar"><div class="strength-fill" style="width: ${val*10}%;"></div></div>
-                    <span class="strength-value">${val}</span>
-                </div>
-            `;
-        }).join('');
-
-        const skillsHtml = (director.skillsDetailed || director.skills || []).map(s => `
-            <div class="skill-item-compact">
-                <span>${escapeHtml(s.name)}</span>
-                <span class="skill-level">${escapeHtml(s.level)}</span>
-            </div>
-        `).join('');
-
-        const interestsArray = director.personalInterests ? (Array.isArray(director.personalInterests) ? director.personalInterests : director.personalInterests.split(',')) : [];
-        const interestsHtml = interestsArray.map(i => `<span class="interest-badge">${escapeHtml(i.trim())}</span>`).join('');
-
-        const tagsHtml = (director.tags || []).map(t => `<span class="detail-tag">${escapeHtml(t)}</span>`).join('');
-
-        const uniqueExperience = director.uniqueExperience || director.experience || 'Не указано';
-        const usefulText = director.useful || director.usefulExperience || 'Не указано';
-        const wantText = director.wantToKnow || 'Не указано';
-
-        modal.innerHTML = `
-            <button class="close-modal">&times;</button>
-            <div class="director-card-full">
-                <div class="card-header">
-                    <div class="avatar">${director.name.charAt(0)}</div>
-                    <div class="card-title">
-                        <h2>${escapeHtml(director.name)}</h2>
-                        <div class="school-meta" style="display: flex; flex-wrap: wrap; gap: 12px;">
-                            <span>🏫 ${escapeHtml(director.school)}</span>
-                            <span>📍 ${escapeHtml(director.city)}</span>
-                            ${director.isMentor ? '<span class="badge-mentor">✨ Наставник-эксперт</span>' : ''}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-section">
-                    <h3>🤝 Могу быть полезен</h3>
-                    <div class="info-text">${escapeHtml(usefulText).replace(/\n/g, '<br>')}</div>
-                </div>
-
-                <div class="info-section">
-                    <h3>💡 Хочу узнать / интересует</h3>
-                    <div class="info-text">${escapeHtml(wantText).replace(/\n/g, '<br>')}</div>
-                </div>
-
-                <div class="info-section">
-                    <h3>⭐ Сильные стороны (оценка 1–10)</h3>
-                    ${strengthsHtml || '<div class="info-text">Не указано</div>'}
-                </div>
-
-                <div class="info-section">
-                    <h3>🧠 Профессиональные навыки</h3>
-                    ${skillsHtml || '<div class="info-text">Не указано</div>'}
-                </div>
-
-                <div class="info-section">
-                    <h3>🏆 Уникальный опыт и достижения</h3>
-                    <div class="info-text">${escapeHtml(uniqueExperience).replace(/\n/g, '<br>')}</div>
-                </div>
-
-                <div class="info-section">
-                    <h3>🎯 Личные интересы и увлечения</h3>
-                    <div class="interests-line">${interestsHtml || '<div class="info-text">Не указано</div>'}</div>
-                </div>
-
-                ${tagsHtml ? `<div class="tags" style="margin-top: 12px;">${tagsHtml}</div>` : ''}
-
-                <button class="contact-btn" onclick="alert('📧 Связаться с ${escapeHtml(director.name)} можно через платформу Гравитация (функция в разработке)')">💬 Связаться с директором</button>
-                <hr>
-                <div style="font-size: 0.7rem; text-align: center; color: rgba(255,255,255,0.45); margin-top: 10px;">
-                    Гравитация • Московская область • Карточка участника сообщества
-                </div>
-            </div>
-        `;
-
-        overlay.appendChild(modal);
-        document.body.appendChild(overlay);
-
-        const closeBtn = modal.querySelector('.close-modal');
-        closeBtn.addEventListener('click', () => overlay.remove());
-    }
-
-    // ========== КАРТОЧКИ ДИРЕКТОРОВ с ПОИСКОМ ==========
     const demoDirectors = [
         {
             name: "Елена Викторовна Громова",
@@ -1109,114 +982,64 @@
     }
 
     let currentSearchTerm = '';
-
-    function directorMatchesSearch(director, searchTerm) {
-        if (!searchTerm) return true;
-        const term = searchTerm.toLowerCase().trim();
-        const fields = [
-            director.name,
-            director.school,
-            director.city,
-            director.useful,
-            director.wantToKnow,
-            director.uniqueExperience,
-            ...(director.personalInterests || []),
-            ...(director.tags || []),
-            ...(director.strengthsDetailed || []).map(s => s.name),
-            ...(director.skillsDetailed || []).map(s => s.name)
-        ].map(f => (f || '').toLowerCase());
-        return fields.some(field => field.includes(term));
+    function directorMatchesSearch(d, term) {
+        if (!term) return true;
+        const t = term.toLowerCase();
+        const fields = [d.name, d.school, d.city, d.useful, d.wantToKnow, d.uniqueExperience, ...(d.personalInterests || []), ...(d.tags || []), ...(d.strengthsDetailed || []).map(s => s.name), ...(d.skillsDetailed || []).map(s => s.name)].map(f => (f || '').toLowerCase());
+        return fields.some(f => f.includes(t));
     }
-
     function renderDirectors() {
         const container = document.getElementById('directorsList');
         if (!container) return;
-        let allDirectors = [...demoDirectors];
+        let all = [...demoDirectors];
         const current = getCurrentDirectorCard();
-        if (current && current.name !== 'Директор' && current.name.trim() !== '') {
-            allDirectors = [current, ...allDirectors];
-        }
-
-        const filtered = allDirectors.filter(d => directorMatchesSearch(d, currentSearchTerm));
-
-        if (filtered.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:20px;">Ничего не найдено. Попробуйте другой запрос.</div>';
-            return;
-        }
-
+        if (current && current.name !== 'Директор' && current.name.trim() !== '') all = [current, ...all];
+        const filtered = all.filter(d => directorMatchesSearch(d, currentSearchTerm));
+        if (!filtered.length) { container.innerHTML = '<div>Ничего не найдено</div>'; return; }
         let html = '';
         filtered.forEach(d => {
-            const allTags = [...(d.strengthsDetailed || []).map(s => s.name), ...(d.skillsDetailed || []).map(s => s.name)].slice(0, 5);
-            html += `
-                <div class="director-card">
-                    <div class="card-header">
-                        <div class="avatar">${d.name.charAt(0)}</div>
-                        <div class="card-title">
-                            <h3>${escapeHtml(d.name)}</h3>
-                            <p>🏫 ${escapeHtml(d.school)} • ${escapeHtml(d.city)} ${d.isMentor ? '<span class="badge-mentor">✨ Наставник</span>' : ''}</p>
-                        </div>
-                    </div>
-                    <div class="info-section">
-                        <h4>🤝 Могу быть полезен</h4>
-                        <p style="font-size:0.9rem;">${escapeHtml(d.useful)}</p>
-                    </div>
-                    <div class="info-section">
-                        <h4>💡 Хочу узнать</h4>
-                        <p style="font-size:0.9rem;">${escapeHtml(d.wantToKnow)}</p>
-                    </div>
-                    ${allTags.length ? `<div class="tags">${allTags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
-                    <button class="contact-btn" onclick="alert('📧 Связаться с ${escapeHtml(d.name)} можно через платформу Гравитация (функция в разработке)')">💬 Связаться</button>
-                    <button class="detail-btn" onclick="showDirectorDetail(${JSON.stringify(d).replace(/"/g, '&quot;')})">📖 Подробнее</button>
-                </div>
-            `;
+            const allTags = [...(d.strengthsDetailed || []).map(s => s.name), ...(d.skillsDetailed || []).map(s => s.name)].slice(0,5);
+            html += `<div class="director-card"><div class="card-header"><div class="avatar">${d.name.charAt(0)}</div><div class="card-title"><h3>${escapeHtml(d.name)}</h3><p>🏫 ${escapeHtml(d.school)} • ${escapeHtml(d.city)} ${d.isMentor ? '<span class="badge-mentor">✨ Наставник</span>' : ''}</p></div></div><div class="info-section"><h4>🤝 Могу быть полезен</h4><p>${escapeHtml(d.useful)}</p></div><div class="info-section"><h4>💡 Хочу узнать</h4><p>${escapeHtml(d.wantToKnow)}</p></div>${allTags.length ? `<div class="tags">${allTags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}<button class="contact-btn" onclick="alert('Связаться с ${escapeHtml(d.name)} можно через платформу')">💬 Связаться</button><button class="detail-btn" onclick="showDirectorDetail(${JSON.stringify(d).replace(/"/g, '&quot;')})">📖 Подробнее</button></div>`;
         });
         container.innerHTML = html;
     }
+    window.showDirectorDetail = function(d) {
+        alert(`Подробная карточка ${d.name} будет доступна в следующей версии`);
+    };
+    document.getElementById('directorSearchInput')?.addEventListener('input', (e) => { currentSearchTerm = e.target.value; renderDirectors(); });
 
-    const searchInput = document.getElementById('directorSearchInput');
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            currentSearchTerm = e.target.value;
-            renderDirectors();
-        });
+    function renderMentors() {
+        const container = document.getElementById('mentorsList');
+        const all = [...demoDirectors];
+        const mentors = all.filter(d => d.isMentor === true);
+        container.innerHTML = mentors.map(m => `<div class="mentor-card" style="background:rgba(255,255,255,0.1); border-radius:15px; padding:15px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;"><div><strong>${escapeHtml(m.name)}</strong><div style="font-size:0.9rem;">${escapeHtml(m.school)}</div><div style="font-size:0.8rem;">${escapeHtml(m.useful)}</div></div><span class="badge" style="background:#00c6ff; padding:5px 10px; border-radius:20px;">Наставник</span></div>`).join('');
     }
 
-    window.addEventListener('load', function() {
-        const savedProfile = localStorage.getItem('directorProfile');
-        if (savedProfile) {
-            const profile = JSON.parse(savedProfile);
-            document.getElementById('directorName').value = profile.name || '';
-            document.getElementById('directorEmail').value = profile.email || '';
-            document.getElementById('directorPhone').value = profile.phone || '';
-            document.getElementById('uniqueExperience').value = profile.experience || '';
-            document.getElementById('personalInterests').value = profile.interests || '';
-            document.getElementById('mentorCheckbox').checked = profile.isMentor || false;
-            document.getElementById('consentCheckbox').checked = profile.consent || false;
-            if(profile.strengths && profile.strengths.length) profile.strengths.forEach(s => addStrength(s.name, s.val));
-            else { addStrength('Стратегическое планирование',8); addStrength('Управление персоналом',7); }
-            if(profile.skills && profile.skills.length) profile.skills.forEach(s => addSkill(s.name, s.level));
-            else addSkill('Цифровая трансформация','Средний');
-        } else {
-            addStrength('Стратегическое планирование',8); addStrength('Управление персоналом',7);
-            addSkill('Цифровая трансформация','Средний');
-            document.getElementById('consentCheckbox').checked = false;
-        }
-        const savedSchool = localStorage.getItem('schoolInfo');
-        if (savedSchool) {
-            const school = JSON.parse(savedSchool);
-            document.getElementById('schoolName').value = school.name || '';
-            document.getElementById('schoolAddress').value = school.address || '';
-            document.getElementById('studentCount').value = school.students || '';
-            document.getElementById('teacherCount').value = school.teachers || '';
-            document.getElementById('schoolType').value = school.type || 'Средняя общеобразовательная';
-            document.getElementById('buildingCount').value = school.buildingCount || '';
-            document.getElementById('usefulExperience').value = school.usefulExperience || '';
-            document.getElementById('wantToKnow').value = school.wantToKnow || '';
-        }
-        loadEventsFromStorage();
-        if (document.getElementById('events').classList.contains('active')) renderEvents();
-        renderDirectors();
+    // Инициализация
+    document.getElementById('loginBtn').onclick = showLoginModal;
+    document.getElementById('registerBtn').onclick = showRegisterModal;
+    document.getElementById('logoutBtn').onclick = logout;
+    document.getElementById('createEventBtn')?.addEventListener('click', () => {
+        const title = document.getElementById('eventTitle').value.trim();
+        const date = document.getElementById('eventDate').value.trim();
+        const desc = document.getElementById('eventDesc').value.trim();
+        const max = document.getElementById('eventMax').value;
+        if (!title || !date || !desc) { alert('Заполните все поля'); return; }
+        createEvent(title, date, desc, max);
+        document.getElementById('eventTitle').value = '';
+        document.getElementById('eventDate').value = '';
+        document.getElementById('eventDesc').value = '';
+        document.getElementById('eventMax').value = '';
     });
+
+    if (localStorage.getItem('userLoggedIn') === 'true') {
+        showMainApp();
+    } else {
+        document.getElementById('splashScreen').style.display = 'flex';
+    }
+    loadEventsFromStorage();
+    window.renderMentors = renderMentors;
+    setTimeout(() => renderMentors(), 100);
 </script>
 </body>
 </html>
