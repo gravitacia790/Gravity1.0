@@ -182,41 +182,53 @@
             cursor: pointer;
         }
 
-        /* ВЕРХНЯЯ НАВИГАЦИЯ — многострочная, с иконками */
+        /* ВЕРХНЯЯ НАВИГАЦИЯ — в один ряд, без переносов, равномерно */
         .top-nav {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            padding: 12px 16px;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            gap: 6px;
+            padding: 10px 12px;
             background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(8px);
             border-bottom: 1px solid rgba(255,255,255,0.1);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* скрываем скроллбар для чистоты */
+        }
+        .top-nav::-webkit-scrollbar {
+            display: none;
         }
         .top-nav button {
+            flex: 1;
             display: inline-flex;
+            flex-direction: column;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            gap: 4px;
             background: rgba(255,255,255,0.1);
             border: none;
             color: white;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 0.85rem;
+            padding: 8px 4px;
+            border-radius: 24px;
+            font-size: 0.7rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
             backdrop-filter: blur(4px);
+            white-space: nowrap;
+            text-align: center;
+            min-width: 0;
         }
         .top-nav button span:first-child {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
         .top-nav button.active {
             background: linear-gradient(45deg, #0072ff, #00c6ff);
             box-shadow: 0 2px 8px rgba(0,114,255,0.4);
         }
 
-        /* НИЖНЯЯ НАВИГАЦИЯ (новые разделы) */
+        /* НИЖНЯЯ НАВИГАЦИЯ */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -526,7 +538,6 @@
             justify-content: space-between;
             align-items: center;
         }
-        /* Стили для новых вкладок (простой контент) */
         .new-section-card {
             background: rgba(255,255,255,0.08);
             border-radius: 24px;
@@ -541,10 +552,10 @@
         @media (max-width: 450px) {
             .gravity-text { font-size: 2.5rem; }
             .region-text { font-size: 1.3rem; }
-            .top-nav button { padding: 6px 12px; font-size: 0.75rem; }
-            .top-nav button span:first-child { font-size: 1rem; }
+            .top-nav button { padding: 6px 2px; font-size: 0.65rem; }
+            .top-nav button span:first-child { font-size: 1.1rem; }
             .nav-item span:first-child { font-size: 1.2rem; }
-            .nav-item { font-size: 0.6rem; padding: 4px 8px; }
+            .nav-item { font-size: 0.6rem; padding: 4px 6px; }
             .avatar-img, .avatar-placeholder {
                 width: 55px;
                 height: 55px;
@@ -578,7 +589,7 @@
             <button class="logout-btn" id="logoutBtn">Выйти</button>
         </div>
 
-        <!-- ВЕРХНЯЯ НАВИГАЦИЯ (старые разделы) — многострочная, с иконками -->
+        <!-- ВЕРХНЯЯ НАВИГАЦИЯ (все пять кнопок в один ряд) -->
         <div class="top-nav" id="topNav">
             <button data-tab="profile"><span>👤</span> <span>Профиль</span></button>
             <button data-tab="school"><span>🏫</span> <span>Школа</span></button>
@@ -719,7 +730,7 @@
         document.getElementById('mainContent').classList.remove('active');
     }
 
-    // ========== ПРОФИЛЬ (с фото, без изменений) ==========
+    // ========== ПРОФИЛЬ (с фото) ==========
     document.getElementById('profile').innerHTML = `
         <h2 style="margin-bottom: 20px;">Профиль директора</h2>
         <div class="form-group">
@@ -883,7 +894,7 @@
         initPhotoUpload();
     }
 
-    // ========== Школа, Мероприятия, Директора, Наставники (без изменений) ==========
+    // ========== Школа, Мероприятия, Директора, Наставники ==========
     document.getElementById('school').innerHTML = `
         <h2 style="margin-bottom: 20px;">Информация о школе</h2>
         <div class="form-group"><label>Полное название школы</label><input type="text" id="schoolName" placeholder="МБОУ СОШ №1"></div>
@@ -918,7 +929,7 @@
         <div id="mentorsList"></div>
     `;
 
-    // ========== НОВЫЕ РАЗДЕЛЫ (контент) ==========
+    // ========== НОВЫЕ РАЗДЕЛЫ ==========
     document.getElementById('expert').innerHTML = `
         <h2>📊 Экспертное мнение</h2>
         <div class="new-section-card">
@@ -1040,7 +1051,7 @@
     }
     function escapeHtml(str) { return str?.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}) || ''; }
 
-    // Демо-директора и функции рендеринга (без изменений, кроме фото)
+    // Демо-директора
     const demoDirectors = [
         { name: "Елена Викторовна Громова", school: "МБОУ «Гимназия №11»", city: "Химки, Московская область", useful: "12 лет успешного руководства...", wantToKnow: "Цифровая трансформация...", isMentor: true, strengthsDetailed: [{ name: "Стратегическое планирование", val: 9.5 }], skillsDetailed: [{ name: "Цифровая трансформация", level: "Эксперт" }], uniqueExperience: "Руководитель пилотного проекта...", personalInterests: ["Литература", "Медитация"], tags: ["#Лидерство"] },
         { name: "Анна Сергеевна Воронцова", school: "Гимназия №3", city: "Красногорск", useful: "Инклюзивное образование", wantToKnow: "Цифровые платформы", isMentor: true, strengthsDetailed: [{ name: "Работа с родителями", val: 9 }], skillsDetailed: [{ name: "Управление персоналом", level: "Продвинутый" }], uniqueExperience: "Создала ресурсный класс", personalInterests: ["Психология"], tags: ["#Инклюзия"] },
@@ -1102,85 +1113,46 @@
         container.innerHTML = mentors.map(m => `<div style="background:rgba(255,255,255,0.1); border-radius:15px; padding:15px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;"><div><strong>${escapeHtml(m.name)}</strong><div>${escapeHtml(m.school)}</div><div>${escapeHtml(m.useful)}</div></div><span style="background:#00c6ff; padding:5px 10px; border-radius:20px;">Наставник</span></div>`).join('');
     }
 
-    // ========== УПРАВЛЕНИЕ ВКЛАДКАМИ (верхние и нижние) ==========
+    // ========== УПРАВЛЕНИЕ ВКЛАДКАМИ ==========
     function initTabs() {
-        // Верхние кнопки (старые разделы)
         const topButtons = document.querySelectorAll('#topNav button');
         const topContents = ['profile', 'school', 'events', 'directors', 'mentors'];
-        // Нижние кнопки (новые разделы)
         const bottomButtons = document.querySelectorAll('#bottomNav .nav-item');
         const bottomContents = ['expert', 'gl', 'internship', 'calendar'];
 
-        // Функция переключения верхних вкладок
         function switchTopTab(tabId) {
-            // Скрыть все верхние контенты
-            topContents.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.remove('active');
-            });
+            topContents.forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
             const activeTab = document.getElementById(tabId);
             if (activeTab) activeTab.classList.add('active');
-            // Обновить активный класс у кнопок
             topButtons.forEach(btn => {
-                if (btn.getAttribute('data-tab') === tabId) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
+                if (btn.getAttribute('data-tab') === tabId) btn.classList.add('active');
+                else btn.classList.remove('active');
             });
-            // При переключении на верхнюю вкладку — скрываем нижние контенты
-            bottomContents.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.remove('active');
-            });
+            bottomContents.forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
             bottomButtons.forEach(btn => btn.classList.remove('active'));
         }
 
-        // Функция переключения нижних вкладок
         function switchBottomTab(tabId) {
-            // Скрыть все нижние контенты
-            bottomContents.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.remove('active');
-            });
+            bottomContents.forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
             const activeTab = document.getElementById(tabId);
             if (activeTab) activeTab.classList.add('active');
-            // Обновить активный класс у нижних кнопок
             bottomButtons.forEach(btn => {
-                if (btn.getAttribute('data-newtab') === tabId) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
+                if (btn.getAttribute('data-newtab') === tabId) btn.classList.add('active');
+                else btn.classList.remove('active');
             });
-            // При переключении на нижнюю вкладку — скрываем верхние контенты
-            topContents.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.remove('active');
-            });
+            topContents.forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
             topButtons.forEach(btn => btn.classList.remove('active'));
         }
 
-        // Навешиваем обработчики на верхние кнопки
-        topButtons.forEach(btn => {
-            const tabId = btn.getAttribute('data-tab');
-            btn.addEventListener('click', () => switchTopTab(tabId));
-        });
-        // Навешиваем обработчики на нижние кнопки
-        bottomButtons.forEach(btn => {
-            const tabId = btn.getAttribute('data-newtab');
-            btn.addEventListener('click', () => switchBottomTab(tabId));
-        });
+        topButtons.forEach(btn => { const tabId = btn.getAttribute('data-tab'); btn.addEventListener('click', () => switchTopTab(tabId)); });
+        bottomButtons.forEach(btn => { const tabId = btn.getAttribute('data-newtab'); btn.addEventListener('click', () => switchBottomTab(tabId)); });
 
-        // По умолчанию показываем первую верхнюю вкладку (Профиль)
         switchTopTab('profile');
-        // Рендерим динамические списки для старых разделов
         renderDirectors();
         renderEvents();
         renderMentors();
     }
 
-    // Инициализация приложения
     document.getElementById('loginBtn').onclick = showLoginModal;
     document.getElementById('registerBtn').onclick = showRegisterModal;
     document.getElementById('logoutBtn').onclick = logout;
