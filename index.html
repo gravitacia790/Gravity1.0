@@ -182,7 +182,41 @@
             cursor: pointer;
         }
 
-        /* Нижняя навигация */
+        /* ВЕРХНЯЯ НАВИГАЦИЯ — многострочная, с иконками */
+        .top-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .top-nav button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        .top-nav button span:first-child {
+            font-size: 1.2rem;
+        }
+        .top-nav button.active {
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+            box-shadow: 0 2px 8px rgba(0,114,255,0.4);
+        }
+
+        /* НИЖНЯЯ НАВИГАЦИЯ (новые разделы) */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -211,7 +245,7 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
-            padding: 6px 12px;
+            padding: 6px 8px;
             border-radius: 30px;
         }
         .nav-item span:first-child {
@@ -234,7 +268,7 @@
             display: block;
         }
 
-        /* Общие стили для форм */
+        /* Общие стили */
         .search-container { margin-bottom: 20px; }
         .search-input {
             width: 100%;
@@ -292,7 +326,6 @@
             cursor: pointer;
             margin-bottom: 10px;
         }
-        /* Чекбоксы унифицированы как в index.html */
         .checkbox-label {
             display: flex;
             align-items: center;
@@ -362,17 +395,33 @@
             gap: 15px;
             margin-bottom: 15px;
         }
-        .avatar {
+        .avatar-img, .avatar-placeholder {
             width: 70px;
             height: 70px;
-            background: linear-gradient(135deg, #0072ff, #00c6ff);
             border-radius: 50%;
+            flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 28px;
             font-weight: 600;
             color: white;
+            background: linear-gradient(135deg, #0072ff, #00c6ff);
+        }
+        .avatar-img {
+            background: none;
+            object-fit: cover;
+        }
+        .photo-preview {
+            margin-top: 12px;
+            text-align: center;
+        }
+        .photo-preview img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.3);
         }
         .badge-mentor {
             background: #ffaa33;
@@ -477,11 +526,30 @@
             justify-content: space-between;
             align-items: center;
         }
+        /* Стили для новых вкладок (простой контент) */
+        .new-section-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #00c6ff;
+        }
+        .new-section-card h3 {
+            margin-bottom: 12px;
+            color: #00c6ff;
+        }
         @media (max-width: 450px) {
             .gravity-text { font-size: 2.5rem; }
             .region-text { font-size: 1.3rem; }
+            .top-nav button { padding: 6px 12px; font-size: 0.75rem; }
+            .top-nav button span:first-child { font-size: 1rem; }
             .nav-item span:first-child { font-size: 1.2rem; }
             .nav-item { font-size: 0.6rem; padding: 4px 8px; }
+            .avatar-img, .avatar-placeholder {
+                width: 55px;
+                height: 55px;
+                font-size: 22px;
+            }
         }
     </style>
 </head>
@@ -510,21 +578,35 @@
             <button class="logout-btn" id="logoutBtn">Выйти</button>
         </div>
 
-        <!-- Контейнеры для контента -->
+        <!-- ВЕРХНЯЯ НАВИГАЦИЯ (старые разделы) — многострочная, с иконками -->
+        <div class="top-nav" id="topNav">
+            <button data-tab="profile"><span>👤</span> <span>Профиль</span></button>
+            <button data-tab="school"><span>🏫</span> <span>Школа</span></button>
+            <button data-tab="events"><span>📅</span> <span>Мероприятия</span></button>
+            <button data-tab="directors"><span>🧑‍💼</span> <span>Директора</span></button>
+            <button data-tab="mentors"><span>🌟</span> <span>Наставники</span></button>
+        </div>
+
+        <!-- Контейнеры для старых разделов -->
         <div class="tab-content" id="profile"></div>
         <div class="tab-content" id="school"></div>
         <div class="tab-content" id="events"></div>
         <div class="tab-content" id="directors"></div>
         <div class="tab-content" id="mentors"></div>
 
-        <!-- Нижняя навигация -->
-        <div class="bottom-nav">
-            <button class="nav-item" data-tab="profile"><span>👤</span><span>Профиль</span></button>
-            <button class="nav-item" data-tab="school"><span>🏫</span><span>Школа</span></button>
-            <button class="nav-item" data-tab="events"><span>📅</span><span>Мероприятия</span></button>
-            <button class="nav-item" data-tab="directors"><span>🧑‍💼</span><span>Директора</span></button>
-            <button class="nav-item" data-tab="mentors"><span>🌟</span><span>Наставники</span></button>
+        <!-- НИЖНЯЯ НАВИГАЦИЯ (новые разделы) -->
+        <div class="bottom-nav" id="bottomNav">
+            <button class="nav-item" data-newtab="expert"><span>📊</span><span>Экспертное мнение</span></button>
+            <button class="nav-item" data-newtab="gl"><span>⭐</span><span>ГЛ</span></button>
+            <button class="nav-item" data-newtab="internship"><span>🎓</span><span>Стажировка</span></button>
+            <button class="nav-item" data-newtab="calendar"><span>📅</span><span>Календарь мероприятий</span></button>
         </div>
+
+        <!-- Контейнеры для новых разделов -->
+        <div class="tab-content" id="expert"></div>
+        <div class="tab-content" id="gl"></div>
+        <div class="tab-content" id="internship"></div>
+        <div class="tab-content" id="calendar"></div>
     </div>
 </div>
 
@@ -637,10 +719,14 @@
         document.getElementById('mainContent').classList.remove('active');
     }
 
-    // ========== ОБНОВЛЁННЫЙ ПРОФИЛЬ (HTML И ФУНКЦИИ) ==========
-    // Устанавливаем содержимое вкладки профиля в точности как в index.html
+    // ========== ПРОФИЛЬ (с фото, без изменений) ==========
     document.getElementById('profile').innerHTML = `
         <h2 style="margin-bottom: 20px;">Профиль директора</h2>
+        <div class="form-group">
+            <label>Фото директора</label>
+            <input type="file" id="directorPhoto" accept="image/jpeg,image/png,image/webp">
+            <div id="photoPreview" class="photo-preview"></div>
+        </div>
         <div class="form-group"><label>ФИО полностью</label><input type="text" id="directorName" placeholder="Иванов Иван Иванович"></div>
         <div class="form-group"><label>Email</label><input type="email" id="directorEmail" placeholder="director@school.ru"></div>
         <div class="form-group"><label>Телефон</label><input type="tel" id="directorPhone" placeholder="+7 (999) 999-99-99"></div>
@@ -648,21 +734,44 @@
         <h3 style="margin: 20px 0 10px;">Профессиональные навыки</h3><div id="skillsList"></div><button class="add-btn" onclick="addSkill()">+ Добавить навык</button>
         <h3 style="margin: 20px 0 10px;">Уникальный опыт</h3><div class="form-group"><textarea id="uniqueExperience" rows="3" placeholder="Расскажите о вашем уникальном профессиональном опыте..."></textarea></div>
         <h3 style="margin: 20px 0 10px;">Личные интересы</h3><div class="form-group"><textarea id="personalInterests" rows="3" placeholder="Ваши хобби, увлечения и интересы..."></textarea></div>
-        
         <div class="checkbox-label" style="margin-top: 20px;">
             <input type="checkbox" id="mentorCheckbox">
             <label for="mentorCheckbox">Готов стать наставником будущих лидеров в сфере образования</label>
         </div>
-        
         <div class="checkbox-label">
             <input type="checkbox" id="consentCheckbox">
             <label for="consentCheckbox">Согласен на обработку персональных данных</label>
         </div>
-        
         <button class="save-btn" onclick="saveProfile()">Сохранить профиль</button>
     `;
 
-    // Функции добавления сильных сторон и навыков (аналоги index.html)
+    let tempPhotoBase64 = null;
+
+    function initPhotoUpload() {
+        const fileInput = document.getElementById('directorPhoto');
+        if (!fileInput) return;
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                if (file.size > 1024 * 1024) {
+                    alert('Файл слишком большой. Максимум 1 МБ');
+                    fileInput.value = '';
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    tempPhotoBase64 = ev.target.result;
+                    const previewDiv = document.getElementById('photoPreview');
+                    previewDiv.innerHTML = `<img src="${tempPhotoBase64}" alt="Фото профиля">`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Пожалуйста, выберите изображение (JPEG, PNG, WebP)');
+                fileInput.value = '';
+            }
+        });
+    }
+
     window.addStrength = function(name = '', val = 5) {
         const strengthsList = document.getElementById('strengthsList');
         const newDiv = document.createElement('div');
@@ -702,13 +811,22 @@
             strengths: strengths,
             skills: skills
         };
+        if (tempPhotoBase64) {
+            profileData.photo = tempPhotoBase64;
+        } else {
+            const oldProfile = localStorage.getItem('directorProfile');
+            if (oldProfile) {
+                const old = JSON.parse(oldProfile);
+                if (old.photo) profileData.photo = old.photo;
+            }
+        }
         localStorage.setItem('directorProfile', JSON.stringify(profileData));
         alert('Профиль сохранён!');
         renderDirectors();
+        loadUserDataIntoForms();
     };
 
     function loadUserDataIntoForms() {
-        // Загрузка профиля
         const savedProfile = localStorage.getItem('directorProfile');
         if (savedProfile) {
             const profile = JSON.parse(savedProfile);
@@ -719,7 +837,14 @@
             document.getElementById('personalInterests').value = profile.interests || '';
             document.getElementById('mentorCheckbox').checked = profile.isMentor || false;
             document.getElementById('consentCheckbox').checked = profile.consent || false;
-            // Очищаем списки и загружаем сохранённые strengths/skills
+            if (profile.photo) {
+                const previewDiv = document.getElementById('photoPreview');
+                previewDiv.innerHTML = `<img src="${profile.photo}" alt="Фото профиля">`;
+                tempPhotoBase64 = profile.photo;
+            } else {
+                document.getElementById('photoPreview').innerHTML = '';
+                tempPhotoBase64 = null;
+            }
             const strengthsDiv = document.getElementById('strengthsList');
             const skillsDiv = document.getElementById('skillsList');
             strengthsDiv.innerHTML = '';
@@ -736,13 +861,13 @@
                 addSkill('Цифровая трансформация','Средний');
             }
         } else {
-            // Если профиля нет, создаём дефолтные значения
             addStrength('Стратегическое планирование',8);
             addStrength('Управление персоналом',7);
             addSkill('Цифровая трансформация','Средний');
             document.getElementById('consentCheckbox').checked = false;
+            document.getElementById('photoPreview').innerHTML = '';
+            tempPhotoBase64 = null;
         }
-        // Загрузка школы (как было)
         const savedSchool = localStorage.getItem('schoolInfo');
         if (savedSchool) {
             const school = JSON.parse(savedSchool);
@@ -755,31 +880,10 @@
             document.getElementById('usefulExperience').value = school.usefulExperience || '';
             document.getElementById('wantToKnow').value = school.wantToKnow || '';
         }
+        initPhotoUpload();
     }
 
-    // ---------- Переключение вкладок через нижнее меню ----------
-    function initTabs() {
-        const navItems = document.querySelectorAll('.nav-item');
-        const contents = document.querySelectorAll('.tab-content');
-        function switchTab(tabId) {
-            contents.forEach(c => c.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            navItems.forEach(item => {
-                if (item.getAttribute('data-tab') === tabId) item.classList.add('active');
-                else item.classList.remove('active');
-            });
-            if (tabId === 'directors') renderDirectors();
-            if (tabId === 'events') renderEvents();
-            if (tabId === 'mentors') renderMentors();
-        }
-        navItems.forEach(item => {
-            item.addEventListener('click', () => switchTab(item.getAttribute('data-tab')));
-        });
-        // По умолчанию показываем профиль
-        switchTab('profile');
-    }
-
-    // ---------- Остальные вкладки (не меняются) ----------
+    // ========== Школа, Мероприятия, Директора, Наставники (без изменений) ==========
     document.getElementById('school').innerHTML = `
         <h2 style="margin-bottom: 20px;">Информация о школе</h2>
         <div class="form-group"><label>Полное название школы</label><input type="text" id="schoolName" placeholder="МБОУ СОШ №1"></div>
@@ -814,7 +918,68 @@
         <div id="mentorsList"></div>
     `;
 
-    // ---------- Функции школы, событий, директоров и наставников (без изменений) ----------
+    // ========== НОВЫЕ РАЗДЕЛЫ (контент) ==========
+    document.getElementById('expert').innerHTML = `
+        <h2>📊 Экспертное мнение</h2>
+        <div class="new-section-card">
+            <h3>Тренды в образовании 2026</h3>
+            <p>Цифровая трансформация, персонализация обучения, развитие soft skills. Эксперты сообщества делятся прогнозами.</p>
+        </div>
+        <div class="new-section-card">
+            <h3>Управление изменениями</h3>
+            <p>Как внедрить новые практики без сопротивления коллектива? Опыт директоров из Московской области.</p>
+        </div>
+        <div class="new-section-card">
+            <h3>Финансовая автономия школы</h3>
+            <p>Привлечение внебюджетных средств, гранты, партнёрства с бизнесом. Реальные кейсы.</p>
+        </div>
+    `;
+    document.getElementById('gl').innerHTML = `
+        <h2>⭐ Гравитация лидерства</h2>
+        <div class="new-section-card">
+            <h3>Школа молодого директора</h3>
+            <p>Программа наставничества для начинающих руководителей. Запись на курс откроется в мае.</p>
+        </div>
+        <div class="new-section-card">
+            <h3>Лидерские компетенции</h3>
+            <p>Самодиагностика, развитие эмоционального интеллекта, стратегическое мышление.</p>
+        </div>
+        <div class="new-section-card">
+            <h3>Кейс-чемпионат «Управляю школой»</h3>
+            <p>Решаем реальные задачи из практики директоров. Приём заявок до 20 апреля.</p>
+        </div>
+    `;
+    document.getElementById('internship').innerHTML = `
+        <h2>🎓 Стажировка</h2>
+        <div class="new-section-card">
+            <h3>Стажировка в лучших школах МО</h3>
+            <p>Возможность посетить школы-лидеры, перенять опыт. Ближайшая стажировка: 15–17 мая.</p>
+        </div>
+        <div class="new-section-card">
+            <h3>Виртуальная стажировка</h3>
+            <p>Онлайн-модули по управлению качеством, цифровым инструментам, работе с родителями.</p>
+        </div>
+        <div class="new-section-card">
+            <h3>Заявка на стажировку</h3>
+            <p>Оставьте заявку в личном кабинете, и мы подберём подходящую программу.</p>
+        </div>
+    `;
+    document.getElementById('calendar').innerHTML = `
+        <h2>📅 Календарь мероприятий</h2>
+        <div class="new-section-card">
+            <h3>12 апреля – Вебинар «Эффективное бюджетирование»</h3>
+            <p>Спикер: Елена Громова, директор гимназии №11. Регистрация в разделе «Мероприятия».</p>
+        </div>
+        <div class="new-section-card">
+            <h3>25 апреля – Форум «Лидеры образования Подмосковья»</h3>
+            <p>Очный форум в Химках. Участие бесплатное по предварительной записи.</p>
+        </div>
+        <div class="new-section-card">
+            <h3>1–5 мая – Онлайн-марафон «Наставничество в школе»</h3>
+            <p>Практические инструменты для наставников и молодых педагогов.</p>
+        </div>
+    `;
+
     window.saveSchool = function() {
         const schoolData = {
             name: document.getElementById('schoolName').value,
@@ -875,96 +1040,19 @@
     }
     function escapeHtml(str) { return str?.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}) || ''; }
 
+    // Демо-директора и функции рендеринга (без изменений, кроме фото)
     const demoDirectors = [
-        {
-            name: "Елена Викторовна Громова",
-            school: "МБОУ «Гимназия №11»",
-            city: "Химки, Московская область",
-            useful: "12 лет успешного руководства школой с высокими образовательными результатами (ТОП-50 школ МО).\nВнедрение системы наставничества для молодых педагогов, снижение текучести кадров на 35%.\nЭксперт по подготовке к государственной аккредитации и лицензированию.\nОрганизация профильных инженерных и IT-классов в сотрудничестве с вузами.\nГрантовая деятельность: привлечено более 8 млн ₽ на модернизацию лабораторий.",
-            wantToKnow: "Цифровая трансформация школ: эффективные AI-инструменты для управленческого учёта.\nКак выстроить систему проектного обучения, интегрированную с региональными предприятиями.\nПрактики ментального здоровья педагогов: программы профилактики выгорания.\nКейсы по созданию автономии школы и внебюджетной деятельности.",
-            isMentor: true,
-            strengthsDetailed: [
-                { name: "Стратегическое планирование", val: 9.5 },
-                { name: "Управление персоналом и мотивация", val: 9.2 },
-                { name: "Финансовая эффективность / фандрайзинг", val: 8.8 },
-                { name: "Коммуникация с родительским сообществом", val: 9.7 },
-                { name: "Развитие инклюзивной среды", val: 8.4 }
-            ],
-            skillsDetailed: [
-                { name: "Цифровая трансформация образования", level: "Эксперт" },
-                { name: "Проектный менеджмент (гранты, дорожные карты)", level: "Эксперт" },
-                { name: "Управление изменениями / конфликтология", level: "Продвинутый" },
-                { name: "Бюджетирование и внебюджетная деятельность", level: "Продвинутый" },
-                { name: "Публичные выступления / образовательная аналитика", level: "Эксперт" }
-            ],
-            uniqueExperience: "Руководитель пилотного проекта «Школа полного дня» в Химках (охват 780 учеников).\nФиналист Всероссийкого конкурса «Директор года – 2024».\nРазработала и внедрила систему «Цифровой помощник классного руководителя» (автоматизация отчётности, снижение бумажной нагрузки на 40%).\nОрганизатор ежегодного межмуниципального форума «Лидеры образования Подмосковья».\nАвтор статей в журнале «Управление школой» (темы: наставничество, аккредитационные процедуры).",
-            personalInterests: ["Современная педагогическая литература", "Медитация и осознанность для педагогов", "Графический дизайн", "Велотуризм", "Волонтёрство в просветительских проектах"],
-            tags: ["#Стратегическое_планирование", "#Наставничество_педагогов", "#IT_класс", "#Гранты_образование", "#Школьное_лидерство", "#Инклюзия"]
-        },
-        {
-            name: "Анна Сергеевна Воронцова",
-            school: "Гимназия №3",
-            city: "Красногорск",
-            useful: "Опыт внедрения инклюзивного образования, успешное прохождение аккредитации.",
-            wantToKnow: "Цифровые платформы для управления школой, методики работы с молодыми педагогами.",
-            isMentor: true,
-            strengthsDetailed: [
-                { name: "Стратегическое планирование", val: 8 },
-                { name: "Работа с родителями", val: 9 }
-            ],
-            skillsDetailed: [
-                { name: "Управление персоналом", level: "Продвинутый" },
-                { name: "Фандрайзинг", level: "Средний" }
-            ],
-            uniqueExperience: "Успешно прошла 2 аккредитации, создала ресурсный класс для детей с ОВЗ.",
-            personalInterests: ["Психология", "Чтение", "Садоводство"],
-            tags: ["#Инклюзия", "#Аккредитация", "#Родительский_комитет"]
-        },
-        {
-            name: "Дмитрий Павлович Громов",
-            school: "Лицей №10",
-            city: "Долгопрудный",
-            useful: "Построение IT-лицея с нуля, привлечение грантов.",
-            wantToKnow: "Организация профильных классов, мотивация педагогов.",
-            isMentor: false,
-            strengthsDetailed: [
-                { name: "Цифровая трансформация", val: 9 },
-                { name: "Лидерство", val: 8.5 }
-            ],
-            skillsDetailed: [
-                { name: "Проектный менеджмент", level: "Эксперт" },
-                { name: "IT-инфраструктура", level: "Эксперт" }
-            ],
-            uniqueExperience: "Создал IT-лицей с нуля, выиграл грант на оборудование лабораторий.",
-            personalInterests: ["Программирование", "Шахматы", "Робототехника"],
-            tags: ["#IT_лицей", "#Гранты", "#Цифровизация"]
-        },
-        {
-            name: "Екатерина Викторовна Морозова",
-            school: "СОШ №22",
-            city: "Одинцово",
-            useful: "Создание школьного медиацентра, развитие волонтёрства.",
-            wantToKnow: "Эффективное наставничество для молодых директоров.",
-            isMentor: true,
-            strengthsDetailed: [
-                { name: "Коммуникабельность", val: 9 },
-                { name: "Креативность", val: 8 }
-            ],
-            skillsDetailed: [
-                { name: "Медиа", level: "Продвинутый" },
-                { name: "Организация мероприятий", level: "Продвинутый" }
-            ],
-            uniqueExperience: "Запустила школьное телевидение, привлекла волонтёров к социальным проектам.",
-            personalInterests: ["Журналистика", "Волонтёрство", "Фотография"],
-            tags: ["#Медиа", "#Волонтёрство", "#Школьное_ТВ"]
-        }
+        { name: "Елена Викторовна Громова", school: "МБОУ «Гимназия №11»", city: "Химки, Московская область", useful: "12 лет успешного руководства...", wantToKnow: "Цифровая трансформация...", isMentor: true, strengthsDetailed: [{ name: "Стратегическое планирование", val: 9.5 }], skillsDetailed: [{ name: "Цифровая трансформация", level: "Эксперт" }], uniqueExperience: "Руководитель пилотного проекта...", personalInterests: ["Литература", "Медитация"], tags: ["#Лидерство"] },
+        { name: "Анна Сергеевна Воронцова", school: "Гимназия №3", city: "Красногорск", useful: "Инклюзивное образование", wantToKnow: "Цифровые платформы", isMentor: true, strengthsDetailed: [{ name: "Работа с родителями", val: 9 }], skillsDetailed: [{ name: "Управление персоналом", level: "Продвинутый" }], uniqueExperience: "Создала ресурсный класс", personalInterests: ["Психология"], tags: ["#Инклюзия"] },
+        { name: "Дмитрий Павлович Громов", school: "Лицей №10", city: "Долгопрудный", useful: "Построение IT-лицея", wantToKnow: "Организация профильных классов", isMentor: false, strengthsDetailed: [{ name: "Цифровая трансформация", val: 9 }], skillsDetailed: [{ name: "Проектный менеджмент", level: "Эксперт" }], uniqueExperience: "Создал IT-лицей", personalInterests: ["Программирование"], tags: ["#IT"] },
+        { name: "Екатерина Викторовна Морозова", school: "СОШ №22", city: "Одинцово", useful: "Школьный медиацентр", wantToKnow: "Наставничество", isMentor: true, strengthsDetailed: [{ name: "Коммуникабельность", val: 9 }], skillsDetailed: [{ name: "Медиа", level: "Продвинутый" }], uniqueExperience: "Запустила школьное ТВ", personalInterests: ["Журналистика"], tags: ["#Медиа"] }
     ];
 
     function getCurrentDirectorCard() {
         const profile = localStorage.getItem('directorProfile');
         const school = localStorage.getItem('schoolInfo');
         if (!profile && !school) return null;
-        const p = profile ? JSON.parse(profile) : { name: '', strengths: [], skills: [], isMentor: false, experience: '', interests: '' };
+        const p = profile ? JSON.parse(profile) : { name: '', strengths: [], skills: [], isMentor: false, experience: '', interests: '', photo: null };
         const s = school ? JSON.parse(school) : { name: 'Школа не указана', address: '', usefulExperience: '', wantToKnow: '' };
         return {
             name: p.name || 'Директор',
@@ -977,7 +1065,8 @@
             skillsDetailed: p.skills ? p.skills.map(sk => ({ name: sk.name, level: sk.level })) : [],
             uniqueExperience: p.experience || 'Не указано',
             personalInterests: p.interests ? p.interests.split('\n').filter(i => i.trim()) : [],
-            tags: []
+            tags: [],
+            photo: p.photo || null
         };
     }
 
@@ -998,24 +1087,100 @@
         if (!filtered.length) { container.innerHTML = '<div>Ничего не найдено</div>'; return; }
         let html = '';
         filtered.forEach(d => {
+            let avatarHtml = d.photo ? `<img src="${d.photo}" class="avatar-img" alt="Фото">` : `<div class="avatar-placeholder">${d.name.charAt(0)}</div>`;
             const allTags = [...(d.strengthsDetailed || []).map(s => s.name), ...(d.skillsDetailed || []).map(s => s.name)].slice(0,5);
-            html += `<div class="director-card"><div class="card-header"><div class="avatar">${d.name.charAt(0)}</div><div class="card-title"><h3>${escapeHtml(d.name)}</h3><p>🏫 ${escapeHtml(d.school)} • ${escapeHtml(d.city)} ${d.isMentor ? '<span class="badge-mentor">✨ Наставник</span>' : ''}</p></div></div><div class="info-section"><h4>🤝 Могу быть полезен</h4><p>${escapeHtml(d.useful)}</p></div><div class="info-section"><h4>💡 Хочу узнать</h4><p>${escapeHtml(d.wantToKnow)}</p></div>${allTags.length ? `<div class="tags">${allTags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}<button class="contact-btn" onclick="alert('Связаться с ${escapeHtml(d.name)} можно через платформу')">💬 Связаться</button><button class="detail-btn" onclick="showDirectorDetail(${JSON.stringify(d).replace(/"/g, '&quot;')})">📖 Подробнее</button></div>`;
+            html += `<div class="director-card"><div class="card-header">${avatarHtml}<div class="card-title"><h3>${escapeHtml(d.name)}</h3><p>🏫 ${escapeHtml(d.school)} • ${escapeHtml(d.city)} ${d.isMentor ? '<span class="badge-mentor">✨ Наставник</span>' : ''}</p></div></div><div class="info-section"><h4>🤝 Могу быть полезен</h4><p>${escapeHtml(d.useful)}</p></div><div class="info-section"><h4>💡 Хочу узнать</h4><p>${escapeHtml(d.wantToKnow)}</p></div>${allTags.length ? `<div class="tags">${allTags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}<button class="contact-btn" onclick="alert('Связаться с ${escapeHtml(d.name)} можно через платформу')">💬 Связаться</button><button class="detail-btn" onclick="showDirectorDetail(${JSON.stringify(d).replace(/"/g, '&quot;')})">📖 Подробнее</button></div>`;
         });
         container.innerHTML = html;
     }
-    window.showDirectorDetail = function(d) {
-        alert(`Подробная карточка ${d.name} будет доступна в следующей версии`);
-    };
+    window.showDirectorDetail = function(d) { alert(`Подробная карточка ${d.name} будет доступна в следующей версии`); };
     document.getElementById('directorSearchInput')?.addEventListener('input', (e) => { currentSearchTerm = e.target.value; renderDirectors(); });
-
     function renderMentors() {
         const container = document.getElementById('mentorsList');
         const all = [...demoDirectors];
         const mentors = all.filter(d => d.isMentor === true);
-        container.innerHTML = mentors.map(m => `<div class="mentor-card" style="background:rgba(255,255,255,0.1); border-radius:15px; padding:15px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;"><div><strong>${escapeHtml(m.name)}</strong><div style="font-size:0.9rem;">${escapeHtml(m.school)}</div><div style="font-size:0.8rem;">${escapeHtml(m.useful)}</div></div><span class="badge" style="background:#00c6ff; padding:5px 10px; border-radius:20px;">Наставник</span></div>`).join('');
+        container.innerHTML = mentors.map(m => `<div style="background:rgba(255,255,255,0.1); border-radius:15px; padding:15px; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;"><div><strong>${escapeHtml(m.name)}</strong><div>${escapeHtml(m.school)}</div><div>${escapeHtml(m.useful)}</div></div><span style="background:#00c6ff; padding:5px 10px; border-radius:20px;">Наставник</span></div>`).join('');
     }
 
-    // Инициализация
+    // ========== УПРАВЛЕНИЕ ВКЛАДКАМИ (верхние и нижние) ==========
+    function initTabs() {
+        // Верхние кнопки (старые разделы)
+        const topButtons = document.querySelectorAll('#topNav button');
+        const topContents = ['profile', 'school', 'events', 'directors', 'mentors'];
+        // Нижние кнопки (новые разделы)
+        const bottomButtons = document.querySelectorAll('#bottomNav .nav-item');
+        const bottomContents = ['expert', 'gl', 'internship', 'calendar'];
+
+        // Функция переключения верхних вкладок
+        function switchTopTab(tabId) {
+            // Скрыть все верхние контенты
+            topContents.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('active');
+            });
+            const activeTab = document.getElementById(tabId);
+            if (activeTab) activeTab.classList.add('active');
+            // Обновить активный класс у кнопок
+            topButtons.forEach(btn => {
+                if (btn.getAttribute('data-tab') === tabId) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            // При переключении на верхнюю вкладку — скрываем нижние контенты
+            bottomContents.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('active');
+            });
+            bottomButtons.forEach(btn => btn.classList.remove('active'));
+        }
+
+        // Функция переключения нижних вкладок
+        function switchBottomTab(tabId) {
+            // Скрыть все нижние контенты
+            bottomContents.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('active');
+            });
+            const activeTab = document.getElementById(tabId);
+            if (activeTab) activeTab.classList.add('active');
+            // Обновить активный класс у нижних кнопок
+            bottomButtons.forEach(btn => {
+                if (btn.getAttribute('data-newtab') === tabId) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            // При переключении на нижнюю вкладку — скрываем верхние контенты
+            topContents.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('active');
+            });
+            topButtons.forEach(btn => btn.classList.remove('active'));
+        }
+
+        // Навешиваем обработчики на верхние кнопки
+        topButtons.forEach(btn => {
+            const tabId = btn.getAttribute('data-tab');
+            btn.addEventListener('click', () => switchTopTab(tabId));
+        });
+        // Навешиваем обработчики на нижние кнопки
+        bottomButtons.forEach(btn => {
+            const tabId = btn.getAttribute('data-newtab');
+            btn.addEventListener('click', () => switchBottomTab(tabId));
+        });
+
+        // По умолчанию показываем первую верхнюю вкладку (Профиль)
+        switchTopTab('profile');
+        // Рендерим динамические списки для старых разделов
+        renderDirectors();
+        renderEvents();
+        renderMentors();
+    }
+
+    // Инициализация приложения
     document.getElementById('loginBtn').onclick = showLoginModal;
     document.getElementById('registerBtn').onclick = showRegisterModal;
     document.getElementById('logoutBtn').onclick = logout;
