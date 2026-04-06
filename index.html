@@ -68,7 +68,7 @@
         .detail-btn { background: rgba(255,255,255,0.2); }
         .event-card { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #0072ff; }
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
-        .modal-content { max-width: 400px; width: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(16px); border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.2); padding: 24px; color: white; }
+        .modal-content { max-width: 400px; width: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(16px); border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.2); padding: 24px; color: white; max-height: 90vh; overflow-y: auto; }
         .close-modal { float: right; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 24px; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; }
         .install-prompt { background: rgba(0, 26, 59, 0.95); backdrop-filter: blur(10px); padding: 15px; border-radius: 15px; margin: 10px; display: flex; justify-content: space-between; align-items: center; }
         .new-section-card { background: rgba(255,255,255,0.08); border-radius: 24px; padding: 20px; margin-bottom: 20px; border-left: 4px solid #00c6ff; }
@@ -77,6 +77,17 @@
         .activity-item { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 8px 12px; margin-bottom: 8px; font-size: 0.8rem; }
         .admin-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
         .admin-table th, .admin-table td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.2); text-align: left; }
+        /* Дополнительные стили для модального окна (детальная карточка) */
+        .strength-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 12px; }
+        .strength-name { font-weight: 500; min-width: 140px; }
+        .strength-bar { flex: 1; height: 8px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; }
+        .strength-fill { height: 100%; background: linear-gradient(90deg, #00c6ff, #0072ff); border-radius: 10px; width: 0%; }
+        .strength-value { font-size: 0.8rem; font-weight: 600; min-width: 36px; text-align: right; color: #aad0ff; }
+        .skill-item-compact { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed rgba(255,255,255,0.2); padding: 8px 0; }
+        .skill-level { background: rgba(0,114,255,0.5); padding: 2px 10px; border-radius: 30px; font-size: 0.7rem; font-weight: 600; }
+        .interests-line { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+        .interest-badge { background: rgba(255,255,240,0.12); border-radius: 30px; padding: 5px 14px; font-size: 0.8rem; }
+        .detail-tag { background: rgba(0, 114, 255, 0.35); border-radius: 40px; padding: 6px 16px; font-size: 0.8rem; font-weight: 500; display: inline-block; margin-right: 8px; margin-bottom: 8px; }
         @media (max-width: 450px) { .gravity-text { font-size: 2.5rem; } .region-text { font-size: 1.3rem; } .top-nav button { padding: 6px 2px; font-size: 0.65rem; } .top-nav button span:first-child { font-size: 1.1rem; } .nav-item span:first-child { font-size: 1.2rem; } .nav-item { font-size: 0.6rem; padding: 4px 6px; } .avatar-img, .avatar-placeholder { width: 55px; height: 55px; font-size: 22px; } }
     </style>
 </head>
@@ -196,20 +207,183 @@
         container.innerHTML = html;
     }
     
-    // ---------- ДЕМО-ДИРЕКТОРА ----------
+    // ---------- РАСШИРЕННЫЕ ДАННЫЕ ДИРЕКТОРОВ (КАК ВО ВТОРОМ ФАЙЛЕ) ----------
     const demoDirectors = [
-        { name: "Елена Викторовна Громова", email: "elena@school11.ru", school: "МБОУ «Гимназия №11»", city: "Химки", useful: "12 лет успешного руководства...", wantToKnow: "Цифровая трансформация...", isMentor: true, strengthsDetailed: [{ name: "Стратегическое планирование", val: 9.5 }], skillsDetailed: [{ name: "Цифровая трансформация", level: "Эксперт" }], uniqueExperience: "Руководитель пилотного проекта...", personalInterests: ["Литература", "Медитация"], tags: ["#Лидерство"], photo: null },
-        { name: "Анна Сергеевна Воронцова", email: "anna@school3.ru", school: "Гимназия №3", city: "Красногорск", useful: "Инклюзивное образование", wantToKnow: "Цифровые платформы", isMentor: true, strengthsDetailed: [{ name: "Работа с родителями", val: 9 }], skillsDetailed: [{ name: "Управление персоналом", level: "Продвинутый" }], uniqueExperience: "Создала ресурсный класс", personalInterests: ["Психология"], tags: ["#Инклюзия"], photo: null },
-        { name: "Дмитрий Павлович Громов", email: "dmitry@licey10.ru", school: "Лицей №10", city: "Долгопрудный", useful: "Построение IT-лицея", wantToKnow: "Организация профильных классов", isMentor: false, strengthsDetailed: [{ name: "Цифровая трансформация", val: 9 }], skillsDetailed: [{ name: "Проектный менеджмент", level: "Эксперт" }], uniqueExperience: "Создал IT-лицей", personalInterests: ["Программирование"], tags: ["#IT"], photo: null },
-        { name: "Екатерина Викторовна Морозова", email: "ekaterina@school22.ru", school: "СОШ №22", city: "Одинцово", useful: "Школьный медиацентр", wantToKnow: "Наставничество", isMentor: true, strengthsDetailed: [{ name: "Коммуникабельность", val: 9 }], skillsDetailed: [{ name: "Медиа", level: "Продвинутый" }], uniqueExperience: "Запустила школьное ТВ", personalInterests: ["Журналистика"], tags: ["#Медиа"], photo: null }
+        {
+            name: "Елена Викторовна Громова",
+            email: "elena@school11.ru",
+            school: "МБОУ «Гимназия №11»",
+            city: "Химки, Московская область",
+            useful: "12 лет успешного руководства школой с высокими образовательными результатами (ТОП-50 школ МО).\nВнедрение системы наставничества для молодых педагогов, снижение текучести кадров на 35%.\nЭксперт по подготовке к государственной аккредитации и лицензированию.\nОрганизация профильных инженерных и IT-классов в сотрудничестве с вузами.\nГрантовая деятельность: привлечено более 8 млн ₽ на модернизацию лабораторий.",
+            wantToKnow: "Цифровая трансформация школ: эффективные AI-инструменты для управленческого учёта.\nКак выстроить систему проектного обучения, интегрированную с региональными предприятиями.\nПрактики ментального здоровья педагогов: программы профилактики выгорания.\nКейсы по созданию автономии школы и внебюджетной деятельности.",
+            isMentor: true,
+            strengthsDetailed: [
+                { name: "Стратегическое планирование", val: 9.5 },
+                { name: "Управление персоналом и мотивация", val: 9.2 },
+                { name: "Финансовая эффективность / фандрайзинг", val: 8.8 },
+                { name: "Коммуникация с родительским сообществом", val: 9.7 },
+                { name: "Развитие инклюзивной среды", val: 8.4 }
+            ],
+            skillsDetailed: [
+                { name: "Цифровая трансформация образования", level: "Эксперт" },
+                { name: "Проектный менеджмент (гранты, дорожные карты)", level: "Эксперт" },
+                { name: "Управление изменениями / конфликтология", level: "Продвинутый" },
+                { name: "Бюджетирование и внебюджетная деятельность", level: "Продвинутый" },
+                { name: "Публичные выступления / образовательная аналитика", level: "Эксперт" }
+            ],
+            uniqueExperience: "Руководитель пилотного проекта «Школа полного дня» в Химках (охват 780 учеников).\nФиналист Всероссийского конкурса «Директор года – 2024».\nРазработала и внедрила систему «Цифровой помощник классного руководителя» (автоматизация отчётности, снижение бумажной нагрузки на 40%).\nОрганизатор ежегодного межмуниципального форума «Лидеры образования Подмосковья».\nАвтор статей в журнале «Управление школой» (темы: наставничество, аккредитационные процедуры).",
+            personalInterests: ["Современная педагогическая литература", "Медитация и осознанность для педагогов", "Графический дизайн", "Велотуризм", "Волонтёрство в просветительских проектах"],
+            tags: ["#Стратегическое_планирование", "#Наставничество_педагогов", "#IT_класс", "#Гранты_образование", "#Школьное_лидерство", "#Инклюзия"],
+            photo: null
+        },
+        {
+            name: "Анна Сергеевна Воронцова",
+            email: "anna@school3.ru",
+            school: "Гимназия №3",
+            city: "Красногорск",
+            useful: "Опыт внедрения инклюзивного образования, успешное прохождение аккредитации.\nСоздание ресурсного класса для детей с ОВЗ.\nВзаимодействие с родительским сообществом и общественными организациями.",
+            wantToKnow: "Цифровые платформы для управления школой, методики работы с молодыми педагогами.\nЭффективное наставничество для начинающих директоров.",
+            isMentor: true,
+            strengthsDetailed: [
+                { name: "Стратегическое планирование", val: 8 },
+                { name: "Работа с родителями", val: 9 },
+                { name: "Инклюзивное образование", val: 9.2 }
+            ],
+            skillsDetailed: [
+                { name: "Управление персоналом", level: "Продвинутый" },
+                { name: "Фандрайзинг", level: "Средний" },
+                { name: "Аккредитация и лицензирование", level: "Эксперт" }
+            ],
+            uniqueExperience: "Успешно прошла 2 аккредитации, создала ресурсный класс для детей с ОВЗ.\nРуководитель муниципальной инновационной площадки по инклюзии.",
+            personalInterests: ["Психология", "Чтение", "Садоводство"],
+            tags: ["#Инклюзия", "#Аккредитация", "#Родительский_комитет"],
+            photo: null
+        },
+        {
+            name: "Дмитрий Павлович Громов",
+            email: "dmitry@licey10.ru",
+            school: "Лицей №10",
+            city: "Долгопрудный",
+            useful: "Построение IT-лицея с нуля, привлечение грантов.\nОрганизация IT-классов и инженерных лабораторий.\nЦифровая трансформация образовательного процесса.",
+            wantToKnow: "Организация профильных классов, мотивация педагогов.\nСовременные методы проектного обучения и стартап-культуры в школе.",
+            isMentor: false,
+            strengthsDetailed: [
+                { name: "Цифровая трансформация", val: 9 },
+                { name: "Лидерство", val: 8.5 },
+                { name: "Управление проектами", val: 9 }
+            ],
+            skillsDetailed: [
+                { name: "Проектный менеджмент", level: "Эксперт" },
+                { name: "IT-инфраструктура", level: "Эксперт" },
+                { name: "Грантрайтинг", level: "Продвинутый" }
+            ],
+            uniqueExperience: "Создал IT-лицей с нуля, выиграл грант на оборудование лабораторий.\nПобедитель конкурса инновационных школ Московской области.",
+            personalInterests: ["Программирование", "Шахматы", "Робототехника"],
+            tags: ["#IT_лицей", "#Гранты", "#Цифровизация"],
+            photo: null
+        },
+        {
+            name: "Екатерина Викторовна Морозова",
+            email: "ekaterina@school22.ru",
+            school: "СОШ №22",
+            city: "Одинцово",
+            useful: "Создание школьного медиацентра, развитие волонтёрства.\nОрганизация школьного телевидения и медиаобразования.\nПривлечение волонтёров к социальным проектам.",
+            wantToKnow: "Эффективное наставничество для молодых директоров.\nСовременные инструменты медиапродвижения школы.",
+            isMentor: true,
+            strengthsDetailed: [
+                { name: "Коммуникабельность", val: 9 },
+                { name: "Креативность", val: 8 },
+                { name: "Организация мероприятий", val: 8.5 }
+            ],
+            skillsDetailed: [
+                { name: "Медиа", level: "Продвинутый" },
+                { name: "Организация мероприятий", level: "Продвинутый" },
+                { name: "SMM и PR", level: "Средний" }
+            ],
+            uniqueExperience: "Запустила школьное телевидение, привлекла волонтёров к социальным проектам.\nЛауреат премии «Лучший медиапроект школы».",
+            personalInterests: ["Журналистика", "Волонтёрство", "Фотография"],
+            tags: ["#Медиа", "#Волонтёрство", "#Школьное_ТВ"],
+            photo: null
+        }
     ];
+
     function initDemoRatings() {
         const ratings = JSON.parse(localStorage.getItem('ratingsData') || '{}');
         demoDirectors.forEach(d => { if (d.email && !ratings[d.email]) ratings[d.email] = { totalScore: Math.floor(Math.random() * 50) + 20, public: true, activities: [] }; });
         localStorage.setItem('ratingsData', JSON.stringify(ratings));
     }
     
-    // ---------- ОТОБРАЖЕНИЕ ДИРЕКТОРОВ С РЕЙТИНГОМ ----------
+    // ---------- ДЕТАЛЬНАЯ КАРТОЧКА ДИРЕКТОРА (МОДАЛЬНОЕ ОКНО) ----------
+    function showDirectorDetail(director) {
+        const existingOverlay = document.querySelector('.modal-overlay');
+        if (existingOverlay) existingOverlay.remove();
+
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-overlay';
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+
+        const modal = document.createElement('div');
+        modal.className = 'modal-content';
+
+        // Подготовка данных
+        const strengthsHtml = (director.strengthsDetailed || []).map(s => `
+            <div class="strength-row">
+                <span class="strength-name">${escapeHtml(s.name)}</span>
+                <div class="strength-bar"><div class="strength-fill" style="width: ${(s.val/10)*100}%;"></div></div>
+                <span class="strength-value">${s.val}</span>
+            </div>
+        `).join('');
+
+        const skillsHtml = (director.skillsDetailed || []).map(s => `
+            <div class="skill-item-compact">
+                <span>${escapeHtml(s.name)}</span>
+                <span class="skill-level">${escapeHtml(s.level)}</span>
+            </div>
+        `).join('');
+
+        const interestsArray = director.personalInterests || [];
+        const interestsHtml = interestsArray.map(i => `<span class="interest-badge">${escapeHtml(i)}</span>`).join('');
+
+        const tagsHtml = (director.tags || []).map(t => `<span class="detail-tag">${escapeHtml(t)}</span>`).join('');
+
+        const uniqueExperience = director.uniqueExperience || 'Не указано';
+        const usefulText = director.useful || 'Не указано';
+        const wantText = director.wantToKnow || 'Не указано';
+
+        modal.innerHTML = `
+            <button class="close-modal">&times;</button>
+            <div style="padding: 0 0 10px 0;">
+                <div class="card-header" style="margin-bottom: 20px;">
+                    <div class="avatar-placeholder" style="width:70px;height:70px;font-size:28px;">${director.name.charAt(0)}</div>
+                    <div class="card-title">
+                        <h2 style="margin-bottom:4px;">${escapeHtml(director.name)}</h2>
+                        <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size:0.85rem;">
+                            <span>🏫 ${escapeHtml(director.school)}</span>
+                            <span>📍 ${escapeHtml(director.city)}</span>
+                            ${director.isMentor ? '<span class="badge-mentor">✨ Наставник-эксперт</span>' : ''}
+                        </div>
+                    </div>
+                </div>
+                <div class="info-section"><h3>🤝 Могу быть полезен</h3><div class="info-text">${escapeHtml(usefulText).replace(/\n/g, '<br>')}</div></div>
+                <div class="info-section"><h3>💡 Хочу узнать / интересует</h3><div class="info-text">${escapeHtml(wantText).replace(/\n/g, '<br>')}</div></div>
+                <div class="info-section"><h3>⭐ Сильные стороны (оценка 1–10)</h3>${strengthsHtml || '<div class="info-text">Не указано</div>'}</div>
+                <div class="info-section"><h3>🧠 Профессиональные навыки</h3>${skillsHtml || '<div class="info-text">Не указано</div>'}</div>
+                <div class="info-section"><h3>🏆 Уникальный опыт и достижения</h3><div class="info-text">${escapeHtml(uniqueExperience).replace(/\n/g, '<br>')}</div></div>
+                <div class="info-section"><h3>🎯 Личные интересы и увлечения</h3><div class="interests-line">${interestsHtml || '<div class="info-text">Не указано</div>'}</div></div>
+                ${tagsHtml ? `<div class="tags" style="margin-top: 12px;">${tagsHtml}</div>` : ''}
+                <button class="contact-btn" onclick="alert('📧 Связаться с ${escapeHtml(director.name)} можно через платформу Гравитация (функция в разработке)')">💬 Связаться с директором</button>
+                <hr style="margin:15px 0; border-color:rgba(255,255,255,0.1);">
+                <div style="font-size: 0.7rem; text-align: center; color: rgba(255,255,255,0.45);">Гравитация • Московская область • Карточка участника сообщества</div>
+            </div>
+        `;
+
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+        const closeBtn = modal.querySelector('.close-modal');
+        closeBtn.addEventListener('click', () => overlay.remove());
+    }
+
+    // ---------- ОТОБРАЖЕНИЕ ДИРЕКТОРОВ С РЕЙТИНГОМ И КНОПКОЙ ПОДРОБНЕЕ ----------
     let currentSearchTerm = '';
     function directorMatchesSearch(d, term) { if (!term) return true; const t = term.toLowerCase(); const fields = [d.name, d.school, d.city, d.useful, d.wantToKnow, d.uniqueExperience, ...(d.personalInterests || []), ...(d.tags || []), ...(d.strengthsDetailed || []).map(s => s.name), ...(d.skillsDetailed || []).map(s => s.name)].map(f => (f || '').toLowerCase()); return fields.some(f => f.includes(t)); }
     function getCurrentDirectorCard() { const profile = localStorage.getItem('directorProfile'); const school = localStorage.getItem('schoolInfo'); if (!profile && !school) return null; const p = profile ? JSON.parse(profile) : { name: '', strengths: [], skills: [], isMentor: false, experience: '', interests: '', photo: null }; const s = school ? JSON.parse(school) : { name: 'Школа не указана', address: '', usefulExperience: '', wantToKnow: '' }; return { name: p.name || 'Директор', email: getCurrentUserEmail(), school: s.name || 'Школа', city: s.address ? s.address.split(',')[1]?.trim() || s.address : 'МО', useful: s.usefulExperience || p.experience || 'Опыт не указан', wantToKnow: s.wantToKnow || 'Не указано', isMentor: p.isMentor || false, strengthsDetailed: p.strengths ? p.strengths.map(st => ({ name: st.name, val: st.val })) : [], skillsDetailed: p.skills ? p.skills.map(sk => ({ name: sk.name, level: sk.level })) : [], uniqueExperience: p.experience || 'Не указано', personalInterests: p.interests ? p.interests.split('\n').filter(i => i.trim()) : [], tags: [], photo: p.photo || null }; }
@@ -229,7 +403,7 @@
             let ratingHtml = '';
             if (directorEmail && canViewRating(directorEmail, currentEmail)) { const rd = getRatingData(directorEmail); ratingHtml = `<div class="rating-badge">⭐ Рейтинг: ${rd.totalScore} баллов</div>`; }
             const allTags = [...(d.strengthsDetailed || []).map(s => s.name), ...(d.skillsDetailed || []).map(s => s.name)].slice(0,5);
-            html += `<div class="director-card"><div class="card-header">${avatarHtml}<div class="card-title"><h3>${escapeHtml(d.name)}</h3><p>🏫 ${escapeHtml(d.school)} • ${escapeHtml(d.city)} ${d.isMentor ? '<span class="badge-mentor">✨ Наставник</span>' : ''}</p>${ratingHtml}</div></div><div class="info-section"><h4>🤝 Могу быть полезен</h4><p>${escapeHtml(d.useful)}</p></div><div class="info-section"><h4>💡 Хочу узнать</h4><p>${escapeHtml(d.wantToKnow)}</p></div>${allTags.length ? `<div class="tags">${allTags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}<button class="contact-btn" onclick="alert('Связаться с ${escapeHtml(d.name)} можно через платформу')">💬 Связаться</button><button class="detail-btn" onclick="alert('Подробная карточка ${escapeHtml(d.name)} будет доступна в следующей версии')">📖 Подробнее</button></div>`;
+            html += `<div class="director-card"><div class="card-header">${avatarHtml}<div class="card-title"><h3>${escapeHtml(d.name)}</h3><p>🏫 ${escapeHtml(d.school)} • ${escapeHtml(d.city)} ${d.isMentor ? '<span class="badge-mentor">✨ Наставник</span>' : ''}</p>${ratingHtml}</div></div><div class="info-section"><h4>🤝 Могу быть полезен</h4><p>${escapeHtml(d.useful)}</p></div><div class="info-section"><h4>💡 Хочу узнать</h4><p>${escapeHtml(d.wantToKnow)}</p></div>${allTags.length ? `<div class="tags">${allTags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}<button class="contact-btn" onclick="alert('Связаться с ${escapeHtml(d.name)} можно через платформу')">💬 Связаться</button><button class="detail-btn" onclick="showDirectorDetail(${JSON.stringify(d).replace(/"/g, '&quot;')})">📖 Подробнее</button></div>`;
         });
         container.innerHTML = html;
     }
@@ -360,10 +534,9 @@
     else document.getElementById('splashScreen').style.display = 'flex';
 </script>
 
-<!-- ДОБАВЛЕННЫЙ СКРИПТ: регистрация на события в разделах ГЛ, Стажировка, Календарь -->
+<!-- ДОБАВЛЕННЫЙ СКРИПТ: регистрация на события в разделах ГЛ, Стажировка, Календарь (сохранён без изменений) -->
 <script>
     (function() {
-        // ---- Данные мероприятий ----
         const glEventsData = [
             { id: 'gl1', title: 'Школа молодого директора', description: 'Программа наставничества для начинающих руководителей. Запись на курс откроется в мае.', date: 'Май 2026' },
             { id: 'gl2', title: 'Лидерские компетенции', description: 'Самодиагностика, развитие эмоционального интеллекта, стратегическое мышление.', date: 'Постоянно' },
@@ -497,8 +670,6 @@
         window.registerForInternshipEvent = (eventId, eventTitle) => registerForEvent('internship', eventId, eventTitle);
         window.registerForCalendarEvent = (eventId, eventTitle) => registerForEvent('calendar', eventId, eventTitle);
 
-        // Переопределяем рендер при переключении вкладок (если уже загружено)
-        const originalSwitchBottomTab = window.initTabs ? null : null;
         setTimeout(() => {
             renderGL();
             renderInternship();
