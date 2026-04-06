@@ -284,7 +284,7 @@
         const container = document.getElementById('admin'); if (!container) return;
         const users = JSON.parse(localStorage.getItem('users') || '[]'); const ratingsData = JSON.parse(localStorage.getItem('ratingsData') || '{}');
         let html = `<h2>👑 Админ-панель: рейтинг директоров</h2><div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Директор</th><th>Email</th><th>Рейтинг</th><th>Публичный</th><th>Активности (последние)</th></tr></thead><tbody>`;
-        users.forEach(user => { if (user.email === 'admin@gravitacia.ru') return; const rating = ratingsData[user.email] || { totalScore: 0, public: false, activities: [] }; const lastActs = rating.activities.slice(0, 3).map(a => `${a.description} (+${a.points})`).join('<br>') || '—'; html += `<tr><td>${escapeHtml(user.name)}</td><td>${escapeHtml(user.email)}</td><td><strong>${rating.totalScore}</strong></td><td>${rating.public ? 'Да' : 'Нет'}</td><td><small>${lastActs}</small></td></tr>`; });
+        users.forEach(user => { if (user.email === 'admin@gravitacia.ru') return; const rating = ratingsData[user.email] || { totalScore: 0, public: false, activities: [] }; const lastActs = rating.activities.slice(0, 3).map(a => `${a.description} (+${a.points})`).join('<br>') || '—'; html += `<tr><td>${escapeHtml(user.name)}</td><td>${escapeHtml(user.email)}</td><td><strong>${rating.totalScore}</strong></td><td>${rating.public ? 'Да' : 'Нет'}</td><td><small>${lastActs}</small></td>`; });
         html += `</tbody></table></div>`; container.innerHTML = html;
     }
     
@@ -358,6 +358,153 @@
     initRatingSystem(); initDemoRatings(); loadEventsFromStorage();
     if (localStorage.getItem('userLoggedIn') === 'true') showMainApp();
     else document.getElementById('splashScreen').style.display = 'flex';
+</script>
+
+<!-- ДОБАВЛЕННЫЙ СКРИПТ: регистрация на события в разделах ГЛ, Стажировка, Календарь -->
+<script>
+    (function() {
+        // ---- Данные мероприятий ----
+        const glEventsData = [
+            { id: 'gl1', title: 'Школа молодого директора', description: 'Программа наставничества для начинающих руководителей. Запись на курс откроется в мае.', date: 'Май 2026' },
+            { id: 'gl2', title: 'Лидерские компетенции', description: 'Самодиагностика, развитие эмоционального интеллекта, стратегическое мышление.', date: 'Постоянно' },
+            { id: 'gl3', title: 'Кейс-чемпионат «Управляю школой»', description: 'Решаем реальные задачи из практики директоров. Приём заявок до 20 апреля.', date: 'До 20 апреля' }
+        ];
+        const internshipEventsData = [
+            { id: 'int1', title: 'Стажировка в лучших школах МО', description: 'Возможность посетить школы-лидеры, перенять опыт. Ближайшая стажировка: 15–17 мая.', date: '15–17 мая' },
+            { id: 'int2', title: 'Виртуальная стажировка', description: 'Онлайн-модули по управлению качеством, цифровым инструментам, работе с родителями.', date: 'Постоянно' },
+            { id: 'int3', title: 'Заявка на стажировку', description: 'Оставьте заявку в личном кабинете, и мы подберём подходящую программу.', date: 'По запросу' }
+        ];
+        const calendarEventsData = [
+            { id: 'cal1', title: 'Вебинар «Эффективное бюджетирование»', description: 'Спикер: Елена Громова, директор гимназии №11. Регистрация в разделе «Мероприятия».', date: '12 апреля' },
+            { id: 'cal2', title: 'Форум «Лидеры образования Подмосковья»', description: 'Очный форум в Химках. Участие бесплатное по предварительной записи.', date: '25 апреля' },
+            { id: 'cal3', title: 'Онлайн-марафон «Наставничество в школе»', description: 'Практические инструменты для наставников и молодых педагогов.', date: '1–5 мая' }
+        ];
+
+        const STORAGE_KEYS = {
+            gl: 'glEventRegistrations',
+            internship: 'internshipEventRegistrations',
+            calendar: 'calendarEventRegistrations'
+        };
+
+        function loadRegistrations(key) {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : {};
+        }
+
+        function saveRegistrations(key, registrations) {
+            localStorage.setItem(key, JSON.stringify(registrations));
+        }
+
+        function registerForEvent(category, eventId, eventTitle) {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert('Необходимо авторизоваться');
+                return;
+            }
+            const user = JSON.parse(currentUser);
+            const schoolInfo = localStorage.getItem('schoolInfo');
+            const schoolName = schoolInfo ? (JSON.parse(schoolInfo).name || 'Школа не указана') : 'Школа не указана';
+
+            const employeeName = prompt('ФИО сотрудника:', user.name || '');
+            if (!employeeName) return;
+            const position = prompt('Должность:', 'Директор');
+            if (!position) return;
+            const school = prompt('От какой школы?', schoolName);
+            if (!school) return;
+
+            const registrations = loadRegistrations(STORAGE_KEYS[category]);
+            if (!registrations[eventId]) registrations[eventId] = [];
+            registrations[eventId].push({
+                employeeName,
+                position,
+                schoolName: school,
+                registeredAt: new Date().toLocaleString(),
+                registeredBy: user.email
+            });
+            saveRegistrations(STORAGE_KEYS[category], registrations);
+
+            if (window.addRatingActivity) {
+                window.addRatingActivity(user.email, 'participation', `Зарегистрировал(а) ${employeeName} на "${eventTitle}" (${category})`, 2);
+            }
+
+            alert(`Сотрудник ${employeeName} успешно зарегистрирован на "${eventTitle}"`);
+            if (category === 'gl') renderGL();
+            else if (category === 'internship') renderInternship();
+            else if (category === 'calendar') renderCalendar();
+        }
+
+        function renderGL() {
+            const container = document.getElementById('gl');
+            if (!container) return;
+            const registrations = loadRegistrations(STORAGE_KEYS.gl);
+            let html = `<h2>⭐ Гравитация лидерства</h2>`;
+            glEventsData.forEach(event => {
+                const eventRegs = registrations[event.id] || [];
+                html += `
+                    <div class="new-section-card">
+                        <h3>${escapeHtml(event.title)}</h3>
+                        <p>📅 ${escapeHtml(event.date)}</p>
+                        <p>${escapeHtml(event.description)}</p>
+                        <button class="save-btn" style="margin-top:10px; padding:8px;" onclick="window.registerForGLEvent('${event.id}', '${escapeHtml(event.title)}')">📝 Зарегистрироваться</button>
+                        ${eventRegs.length ? `<div style="margin-top:12px;"><strong>Записавшиеся:</strong><ul>${eventRegs.map(r => `<li>${escapeHtml(r.employeeName)} (${escapeHtml(r.position)}) — ${escapeHtml(r.schoolName)}</li>`).join('')}</ul></div>` : ''}
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderInternship() {
+            const container = document.getElementById('internship');
+            if (!container) return;
+            const registrations = loadRegistrations(STORAGE_KEYS.internship);
+            let html = `<h2>🎓 Стажировка</h2>`;
+            internshipEventsData.forEach(event => {
+                const eventRegs = registrations[event.id] || [];
+                html += `
+                    <div class="new-section-card">
+                        <h3>${escapeHtml(event.title)}</h3>
+                        <p>📅 ${escapeHtml(event.date)}</p>
+                        <p>${escapeHtml(event.description)}</p>
+                        <button class="save-btn" style="margin-top:10px; padding:8px;" onclick="window.registerForInternshipEvent('${event.id}', '${escapeHtml(event.title)}')">📝 Зарегистрироваться</button>
+                        ${eventRegs.length ? `<div style="margin-top:12px;"><strong>Записавшиеся:</strong><ul>${eventRegs.map(r => `<li>${escapeHtml(r.employeeName)} (${escapeHtml(r.position)}) — ${escapeHtml(r.schoolName)}</li>`).join('')}</ul></div>` : ''}
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderCalendar() {
+            const container = document.getElementById('calendar');
+            if (!container) return;
+            const registrations = loadRegistrations(STORAGE_KEYS.calendar);
+            let html = `<h2>📅 Календарь мероприятий</h2>`;
+            calendarEventsData.forEach(event => {
+                const eventRegs = registrations[event.id] || [];
+                html += `
+                    <div class="new-section-card">
+                        <h3>${escapeHtml(event.title)}</h3>
+                        <p>📅 ${escapeHtml(event.date)}</p>
+                        <p>${escapeHtml(event.description)}</p>
+                        <button class="save-btn" style="margin-top:10px; padding:8px;" onclick="window.registerForCalendarEvent('${event.id}', '${escapeHtml(event.title)}')">📝 Зарегистрироваться</button>
+                        ${eventRegs.length ? `<div style="margin-top:12px;"><strong>Записавшиеся:</strong><ul>${eventRegs.map(r => `<li>${escapeHtml(r.employeeName)} (${escapeHtml(r.position)}) — ${escapeHtml(r.schoolName)}</li>`).join('')}</ul></div>` : ''}
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        window.registerForGLEvent = (eventId, eventTitle) => registerForEvent('gl', eventId, eventTitle);
+        window.registerForInternshipEvent = (eventId, eventTitle) => registerForEvent('internship', eventId, eventTitle);
+        window.registerForCalendarEvent = (eventId, eventTitle) => registerForEvent('calendar', eventId, eventTitle);
+
+        // Переопределяем рендер при переключении вкладок (если уже загружено)
+        const originalSwitchBottomTab = window.initTabs ? null : null;
+        setTimeout(() => {
+            renderGL();
+            renderInternship();
+            renderCalendar();
+        }, 100);
+    })();
 </script>
 </body>
 </html>
