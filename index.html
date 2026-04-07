@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Гравитация">
     <title>Гравитация - Московская область</title>
     <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%D0%93%D1%80%D0%B0%D0%B2%D0%B8%D1%82%D0%B0%D1%86%D0%B8%D1%8F%20-%20%D0%9C%D0%9E%22%2C%22short_name%22%3A%22%D0%93%D1%80%D0%B0%D0%B2%D0%B8%D1%82%D0%B0%D1%86%D0%B8%D1%8F%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23001a3b%22%2C%22theme_color%22%3A%22%23001a3b%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20192%20192'%3E%3Crect%20width='192'%20height='192'%20fill='%23001a3b'/%3E%3Ctext%20x='50%25'%20y='50%25'%20font-size='120'%20text-anchor='middle'%20dy='.3em'%20fill='%23ffffff'%3EG%3C/text%3E%3C/svg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image/svg+xml%22%7D%5D%7D">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        body { background: linear-gradient(135deg, #001a3b 0%, #002b5c 100%); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; color: white; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: linear-gradient(135deg, #001a3b 0%, #002b5c 100%); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; color: white; overscroll-behavior-y: none; }
         #app { width: 100%; max-width: 450px; min-height: 100vh; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); box-shadow: 0 0 40px rgba(0, 0, 0, 0.3); position: relative; overflow-x: hidden; display: flex; flex-direction: column; }
         @keyframes floatIn { 0% { opacity: 0; transform: translateY(100px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
@@ -22,8 +25,11 @@
         .auth-btn { flex: 1; background: linear-gradient(45deg, #0072ff, #00c6ff); border: none; color: white; font-size: 1.2rem; font-weight: 600; padding: 14px 0; border-radius: 60px; box-shadow: 0 10px 25px rgba(0, 114, 255, 0.4); cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease; border: 1px solid rgba(255,255,255,0.25); }
         .auth-btn:active { transform: scale(0.96); }
         .community-stats { margin-top: auto; margin-bottom: 20px; font-size: 0.85rem; font-weight: normal; color: rgba(255, 255, 255, 0.7); background: rgba(0,0,0,0.2); padding: 8px 16px; border-radius: 30px; backdrop-filter: blur(8px); animation: slideUp 0.8s 1s forwards; opacity: 0; text-align: center; line-height: 1.4; width: 90%; max-width: 320px; }
-        .main-content { flex: 1; display: none; flex-direction: column; padding-bottom: 70px; }
+        
+        /* Увеличен padding-bottom для безопасной зоны на iPhone */
+        .main-content { flex: 1; display: none; flex-direction: column; padding-bottom: calc(70px + env(safe-area-inset-bottom)); }
         .main-content.active { display: flex; animation: slideUp 0.5s forwards; }
+        
         .header { display: flex; justify-content: space-between; align-items: center; margin: 16px 20px 10px 20px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.2); }
         .header h1 { font-size: 1.8rem; background: linear-gradient(135deg, #fff, #a8d0ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .logout-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; cursor: pointer; }
@@ -32,19 +38,26 @@
         .top-nav button { flex: 1; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: rgba(255,255,255,0.1); border: none; color: white; padding: 8px 4px; border-radius: 24px; font-size: 0.7rem; font-weight: 500; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(4px); white-space: nowrap; text-align: center; min-width: 0; }
         .top-nav button span:first-child { font-size: 1.3rem; }
         .top-nav button.active { background: linear-gradient(45deg, #0072ff, #00c6ff); box-shadow: 0 2px 8px rgba(0,114,255,0.4); }
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 450px; margin: 0 auto; background: rgba(10, 25, 47, 0.95); backdrop-filter: blur(12px); display: flex; justify-content: space-around; align-items: center; padding: 8px 12px 12px; border-top: 1px solid rgba(255,255,255,0.15); z-index: 100; }
+        
+        /* Учет безопасной зоны на iOS для нижнего меню */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 450px; margin: 0 auto; background: rgba(10, 25, 47, 0.95); backdrop-filter: blur(12px); display: flex; justify-content: space-around; align-items: center; padding: 8px 12px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid rgba(255,255,255,0.15); z-index: 100; }
+        
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; background: transparent; border: none; color: rgba(255,255,255,0.6); font-size: 0.7rem; font-weight: 500; cursor: pointer; transition: all 0.2s; padding: 6px 8px; border-radius: 30px; }
         .nav-item span:first-child { font-size: 1.4rem; }
         .nav-item.active { color: #00c6ff; background: rgba(0, 114, 255, 0.2); }
         .tab-content { display: none; background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; backdrop-filter: blur(5px); margin: 10px 16px 0 16px; flex: 1; }
         .tab-content.active { display: block; }
         .search-container { margin-bottom: 20px; }
-        .search-input { width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 40px; color: white; font-size: 1rem; outline: none; }
+        
+        /* Принудительный размер шрифта 16px предотвращает зум в iOS Safari */
+        .search-input, .form-group input, .form-group textarea, .form-group select, .dynamic-input { font-size: 16px !important; }
+        
+        .search-input { width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 40px; color: white; outline: none; }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: rgba(255,255,255,0.8); }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 15px; color: white; font-size: 1rem; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 15px; color: white; }
         .strength-item, .skill-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 10px; }
-        .dynamic-input { background: transparent; border: none; border-bottom: 1px dashed rgba(255,255,255,0.4); color: white; font-size: 1rem; padding: 5px 0; width: 100%; outline: none; }
+        .dynamic-input { background: transparent; border: none; border-bottom: 1px dashed rgba(255,255,255,0.4); color: white; padding: 5px 0; width: 100%; outline: none; }
         .add-btn { background: rgba(255,255,255,0.2); border: 1px dashed rgba(255,255,255,0.5); color: white; padding: 12px; border-radius: 15px; width: 100%; font-size: 1rem; cursor: pointer; margin-bottom: 10px; }
         .checkbox-label { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; cursor: pointer; font-size: 0.95rem; line-height: 1.3; }
         .checkbox-label input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 22px; height: 22px; background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.4); border-radius: 6px; cursor: pointer; position: relative; transition: all 0.2s ease; flex-shrink: 0; margin: 0; }
@@ -70,7 +83,8 @@
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
         .modal-content { max-width: 400px; width: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(16px); border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.2); padding: 24px; color: white; max-height: 90vh; overflow-y: auto; }
         .close-modal { float: right; background: rgba(255,255,255,0.2); border: none; color: white; font-size: 24px; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; }
-        .install-prompt { background: rgba(0, 26, 59, 0.95); backdrop-filter: blur(10px); padding: 15px; border-radius: 15px; margin: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .install-prompt { background: rgba(0, 26, 59, 0.95); backdrop-filter: blur(10px); padding: 15px; border-radius: 15px; margin: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1px solid rgba(0,198,255,0.3); }
+        .install-prompt button { background: #00c6ff; color: #001a3b; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; }
         .new-section-card { background: rgba(255,255,255,0.08); border-radius: 24px; padding: 20px; margin-bottom: 20px; border-left: 4px solid #00c6ff; }
         .new-section-card h3 { margin-bottom: 12px; color: #00c6ff; }
         .rating-badge { display: inline-block; background: rgba(0,198,255,0.2); border-radius: 30px; padding: 4px 12px; font-size: 0.75rem; margin-top: 8px; border: 1px solid rgba(0,198,255,0.5); }
@@ -96,7 +110,7 @@
     <div class="splash-screen" id="splashScreen">
         <div><div class="gravity-text">Гравитация</div><div class="region-text">Московская область</div></div>
         <div class="auth-buttons"><button class="auth-btn" id="loginBtn">Вход</button><button class="auth-btn" id="registerBtn">Регистрация</button></div>
-        <div class="install-prompt" id="installPrompt" style="display: none;"><span>📱 Установить приложение</span><button id="installBtn">Установить</button></div>
+        <div class="install-prompt" id="installPrompt" style="display: none;"><span>📱 Установить как приложение</span><button id="installBtn">Установить</button></div>
         <div class="community-stats">Гравитация – профессиональное сообщество директоров нас: <span>287</span></div>
     </div>
     <div class="main-content" id="mainContent">
@@ -128,6 +142,37 @@
     </div>
 </div>
 <script>
+    // ---------- PWA И УСТАНОВКА ----------
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const installPrompt = document.getElementById('installPrompt');
+        if (installPrompt) installPrompt.style.display = 'flex';
+    });
+
+    document.getElementById('installBtn')?.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                document.getElementById('installPrompt').style.display = 'none';
+            }
+            deferredPrompt = null;
+        }
+    });
+
+    // Регистрация простого Service Worker "на лету" для поддержки PWA (чтобы браузер разрешил установку)
+    if ('serviceWorker' in navigator) {
+        const swCode = `
+            self.addEventListener('install', (e) => self.skipWaiting());
+            self.addEventListener('activate', (e) => self.clients.claim());
+            self.addEventListener('fetch', (e) => {});
+        `;
+        const blob = new Blob([swCode], {type: 'application/javascript'});
+        navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(err => console.log('SW setup failed:', err));
+    }
+
     // ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
     function escapeHtml(str) { return str?.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}) || ''; }
     function showModal(title, contentHtml) {
@@ -207,7 +252,7 @@
         container.innerHTML = html;
     }
     
-    // ---------- РАСШИРЕННЫЕ ДАННЫЕ ДИРЕКТОРОВ (КАК ВО ВТОРОМ ФАЙЛЕ) ----------
+    // ---------- РАСШИРЕННЫЕ ДАННЫЕ ДИРЕКТОРОВ ----------
     const demoDirectors = [
         {
             name: "Елена Викторовна Громова",
@@ -287,7 +332,7 @@
             email: "ekaterina@school22.ru",
             school: "СОШ №22",
             city: "Одинцово",
-            useful: "Создание школьного медиацентра, развитие волонтёрства.\nОрганизация школьного телевидения и медиаобразования.\nПривлечение волонтёров к социальным проектам.",
+            useful: "Создание школьного медиацентра, развитие волонтёрства.\nОрганизация школьного телевидения и медиаобразования.\nПривлечение волонтёров к социальным проектов.",
             wantToKnow: "Эффективное наставничество для молодых директоров.\nСовременные инструменты медиапродвижения школы.",
             isMentor: true,
             strengthsDetailed: [
@@ -325,7 +370,6 @@
         const modal = document.createElement('div');
         modal.className = 'modal-content';
 
-        // Подготовка данных
         const strengthsHtml = (director.strengthsDetailed || []).map(s => `
             <div class="strength-row">
                 <span class="strength-name">${escapeHtml(s.name)}</span>
@@ -343,9 +387,7 @@
 
         const interestsArray = director.personalInterests || [];
         const interestsHtml = interestsArray.map(i => `<span class="interest-badge">${escapeHtml(i)}</span>`).join('');
-
         const tagsHtml = (director.tags || []).map(t => `<span class="detail-tag">${escapeHtml(t)}</span>`).join('');
-
         const uniqueExperience = director.uniqueExperience || 'Не указано';
         const usefulText = director.useful || 'Не указано';
         const wantText = director.wantToKnow || 'Не указано';
@@ -383,7 +425,7 @@
         closeBtn.addEventListener('click', () => overlay.remove());
     }
 
-    // ---------- ОТОБРАЖЕНИЕ ДИРЕКТОРОВ С РЕЙТИНГОМ И КНОПКОЙ ПОДРОБНЕЕ ----------
+    // ---------- ОТОБРАЖЕНИЕ ДИРЕКТОРОВ ----------
     let currentSearchTerm = '';
     function directorMatchesSearch(d, term) { if (!term) return true; const t = term.toLowerCase(); const fields = [d.name, d.school, d.city, d.useful, d.wantToKnow, d.uniqueExperience, ...(d.personalInterests || []), ...(d.tags || []), ...(d.strengthsDetailed || []).map(s => s.name), ...(d.skillsDetailed || []).map(s => s.name)].map(f => (f || '').toLowerCase()); return fields.some(f => f.includes(t)); }
     function getCurrentDirectorCard() { const profile = localStorage.getItem('directorProfile'); const school = localStorage.getItem('schoolInfo'); if (!profile && !school) return null; const p = profile ? JSON.parse(profile) : { name: '', strengths: [], skills: [], isMentor: false, experience: '', interests: '', photo: null }; const s = school ? JSON.parse(school) : { name: 'Школа не указана', address: '', usefulExperience: '', wantToKnow: '' }; return { name: p.name || 'Директор', email: getCurrentUserEmail(), school: s.name || 'Школа', city: s.address ? s.address.split(',')[1]?.trim() || s.address : 'МО', useful: s.usefulExperience || p.experience || 'Опыт не указан', wantToKnow: s.wantToKnow || 'Не указано', isMentor: p.isMentor || false, strengthsDetailed: p.strengths ? p.strengths.map(st => ({ name: st.name, val: st.val })) : [], skillsDetailed: p.skills ? p.skills.map(sk => ({ name: sk.name, level: sk.level })) : [], uniqueExperience: p.experience || 'Не указано', personalInterests: p.interests ? p.interests.split('\n').filter(i => i.trim()) : [], tags: [], photo: p.photo || null }; }
@@ -419,7 +461,7 @@
         }).join('');
     }
     
-    // ---------- ПРОФИЛЬ С РЕЙТИНГОМ ----------
+    // ---------- ПРОФИЛЬ ----------
     function updateProfileRatingDisplay() {
         const email = getCurrentUserEmail();
         if (!email) return;
@@ -534,7 +576,6 @@
     else document.getElementById('splashScreen').style.display = 'flex';
 </script>
 
-<!-- ДОБАВЛЕННЫЙ СКРИПТ: регистрация на события в разделах ГЛ, Стажировка, Календарь (сохранён без изменений) -->
 <script>
     (function() {
         const glEventsData = [
