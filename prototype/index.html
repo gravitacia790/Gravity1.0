@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Интерактивный срез готовности школ Московской области к проведению Киберуроков" />
+    <title>Киберурок — срез готовности школ</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230b1220'/%3E%3Cpath d='M17 19h30v8H27v7h16v8H27v10h-10V19Z' fill='%2367e8c5'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark">К</div>
+          <div>
+            <div class="brand-name">Киберурок</div>
+            <div class="brand-subtitle">аналитический центр</div>
+          </div>
+        </div>
+        <div class="topbar-meta">
+          <span class="demo-chip"><span class="dot"></span> Демо-режим</span>
+          <span class="date-label">Срез на 15 сентября 2026</span>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <aside class="sidebar" aria-label="Навигация">
+          <div class="sidebar-label">РАЗДЕЛЫ</div>
+          <button class="nav-button active" data-view="overview"><span class="nav-icon">◈</span> Руководителю</button>
+          <button class="nav-button" data-view="schools"><span class="nav-icon">▦</span> Школы и матрица</button>
+          <button class="nav-button" data-view="actions"><span class="nav-icon">✓</span> План действий</button>
+          <div class="sidebar-note">
+            <div class="sidebar-note-title">Как читать данные</div>
+            <p>Цвет показывает не «оценку школы», а количество барьеров, о которых сообщил директор.</p>
+            <span class="source-note">186 ответов · 1 школа = 1 ответ</span>
+          </div>
+        </aside>
+
+        <main class="content">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">МОСКОВСКАЯ ОБЛАСТЬ / ВНЕУРОЧНАЯ ДЕЯТЕЛЬНОСТЬ</div>
+              <h1>Срез готовности школ к проведению Киберуроков</h1>
+              <p>От общего сигнала — к конкретной школе, проблеме и следующему шагу.</p>
+            </div>
+            <div class="data-badge"><span class="data-badge-icon">↗</span><span><strong>Источник</strong><br />форма обратной связи директоров</span></div>
+          </div>
+
+          <section class="view-panel active" id="view-overview" aria-labelledby="overview-title">
+            <div class="section-head">
+              <div>
+                <h2 id="overview-title">Картина по региону</h2>
+                <p class="section-caption">Первый экран для управленческого решения</p>
+              </div>
+              <button class="text-button" data-view="schools">Открыть все школы <span>→</span></button>
+            </div>
+
+            <div class="metric-grid" id="metric-grid"></div>
+
+            <div class="insight-banner">
+              <div class="insight-symbol">!</div>
+              <div>
+                <div class="insight-label">ГЛАВНЫЙ СИГНАЛ</div>
+                <div class="insight-text">Участие класса заметно выше там, где урок проходит на платформе. Значит, ключевой резерв — не в новых материалах, а в устранении входа, синхронизации данных и технических ограничений.</div>
+              </div>
+              <div class="insight-stat"><strong id="platform-participation">—</strong><span>участвуют<br />на платформе</span></div>
+              <div class="insight-stat muted"><strong id="handout-participation">—</strong><span>участвуют<br />по раздатке</span></div>
+            </div>
+
+            <div class="overview-grid">
+              <article class="card issue-card">
+                <div class="card-head"><div><h3>Где возникает сбой</h3><p>Доля ответов с проблемой</p></div><span class="card-kicker">8 блоков</span></div>
+                <div id="issue-bars" class="issue-bars"></div>
+              </article>
+              <article class="card posture-card">
+                <div class="card-head"><div><h3>Профиль готовности</h3><p>Распределение школ по уровню риска</p></div><span class="card-kicker">рабочий индекс</span></div>
+                <div id="risk-donut" class="risk-donut-wrap"></div>
+                <div id="risk-legend" class="risk-legend"></div>
+              </article>
+            </div>
+
+            <section class="card priority-card">
+              <div class="card-head"><div><h3>Школы, которым нужен первый контакт</h3><p>Сортировка по совокупности барьеров в ответе директора</p></div><button class="outline-button" data-view="schools">Вся матрица <span>→</span></button></div>
+              <div class="priority-grid" id="priority-grid"></div>
+            </section>
+          </section>
+
+          <section class="view-panel" id="view-schools" aria-labelledby="schools-title">
+            <div class="section-head section-head-tight">
+              <div><h2 id="schools-title">Школы и матрица проблем</h2><p class="section-caption">Выберите школу — справа появится её карта действий</p></div>
+              <div class="result-count" id="result-count">—</div>
+            </div>
+            <div class="filter-bar">
+              <label class="search-field"><span>⌕</span><input id="school-search" type="search" placeholder="Поиск школы" autocomplete="off" /></label>
+              <label class="select-field"><span>Муниципалитет</span><select id="municipality-filter"><option value="all">Все муниципалитеты</option></select></label>
+              <label class="select-field"><span>Уровень риска</span><select id="risk-filter"><option value="all">Все уровни</option><option value="critical">Критический</option><option value="attention">Внимание</option><option value="stable">Стабильный</option></select></label>
+              <label class="toggle-field"><input id="problem-only" type="checkbox" checked /><span class="toggle-ui"></span><span>Только с проблемами</span></label>
+            </div>
+            <div class="schools-layout">
+              <div class="matrix-wrap card"><div class="matrix-scroll"><table class="matrix-table"><thead><tr><th class="school-col">Школа</th><th>Участие</th><th>Данные</th><th>Вход</th><th>Техника</th><th>Расписание</th><th>Директор</th><th>Риск</th></tr></thead><tbody id="school-matrix"></tbody></table></div><div class="table-footer" id="table-footer"></div></div>
+              <aside class="school-detail" id="school-detail" aria-live="polite"></aside>
+            </div>
+          </section>
+
+          <section class="view-panel" id="view-actions" aria-labelledby="actions-title">
+            <div class="section-head"><div><h2 id="actions-title">План действий</h2><p class="section-caption">Аналитические предложения по повторяющимся барьерам</p></div><span class="analytical-label">АНАЛИТИЧЕСКИЕ ПРЕДЛОЖЕНИЯ</span></div>
+            <div class="action-intro">Рекомендации ниже не являются официальными регламентами. Это рабочие гипотезы, сформированные по ответам директоров: их можно превратить в дорожную карту после согласования с организаторами проекта.</div>
+            <div class="action-grid" id="action-grid"></div>
+          </section>
+
+          <footer class="app-footer"><span>Киберурок · прототип для демонстрации</span><span>Источник: форма обратной связи, 186 ответов</span></footer>
+        </main>
+      </div>
+    </div>
+    <script src="data.js?v=3"></script>
+    <script src="registry-map.js?v=1"></script>
+    <script src="app.js?v=4"></script>
+  </body>
+</html>
